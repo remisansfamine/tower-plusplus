@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "MSBuild.exe",
+            "args": [
+                "/property:GenerateFullPaths=true",
+                "/t:build",
+                "/consoleloggerparameters:NoSummary",
+                "/p:configuration=Debug"
+            ],
+            "group": "build",
+            "presentation": { "reveal": "silent" },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

@@ -4,25 +4,32 @@
 
 #include <gp/gp.h>
 
+#include "game.h"
+#include "maths.h"
+#include "render_manager.h"
+#include "life.h"
+
 class Entity
 {
     protected:
         std::string name;
 
-        float   life;
         float   m_damage;
-        float   x, y;
-        GPTexture texture;
 
+        Vector2     m_position;
+        Vector2     m_direction;
+        GPTexture   m_texture;
+        Renderer*   m_renderer = nullptr;
     public:
+        Life    m_life;
 
-        Entity(float x, float y, float life) : x(x), y(y), life(life) {}
+        Entity(Vector2 position) : m_position(position) {}
 
-        GPTexture get_texture() const
-        { return texture; }
+        GPTexture get_texture() const { return m_texture; }
 
-        const float X() const { return x; }
-        const float Y() const { return y; }
+        float X() const { return m_position.x; }
+        float Y() const { return m_position.y; }
+        Vector2 get_position() const { return m_position; }
 
-        //virtual void update();
+        virtual void update() = 0;
 };

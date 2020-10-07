@@ -18,12 +18,6 @@ int main(int argc, char* argv[])
 
         game.update();
 
-        if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1))
-        {
-            GPVector2 mousePos = gpMousePosition(gp);
-            std::cout << "Mouse pressed at { " << mousePos.x << ", " << mousePos.y << " }" << std::endl;
-        }
-
         gpDrawBegin(gp);
         gpDrawClearBackground(gp, GP_CBLACK);
 

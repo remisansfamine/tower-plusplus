@@ -40,8 +40,9 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src/main.cpp" />
+    <ClCompile Include= "src/main.cpp" />
     <ClCompile Include= "src/game.cpp" />
+    <ClCompile Include= "src/maths.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>

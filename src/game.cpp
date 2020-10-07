@@ -1,44 +1,69 @@
 #include <cmath>
 
-
 #include <iostream>
 #include <algorithm>
 
+#include "maths.h"
+
 #include "game.h"
-#include "tower.h"
-#include "enemy.h"
+#include "slowing_tower.h"
+#include "explosive_tower.h"
+#include "standard_tower.h"
+
+#include "strong_enemy.h"
+#include "healer_enemy.h"
+#include "weak_enemy.h"
 
 #include <gp/gp.h>
 
 void Game::update()
 {
-    //std::cout << gpGetFrameTime(gp) << std::endl;
     GPVector2 mouse_pos = gpMousePosition(gp);
 
     if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1))
+        towers.push_back(new ExplosiveTower(mouse_pos, RM));
+
+    if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_3))
+        enemies.push_back(new StrongEnemy(mouse_pos, RM));
+
+    for (Enemy* enemy : enemies)
     {
-        towers.push_back(new Tower(mouse_pos.x, mouse_pos.y, 50, 50, RM));
+        enemy->update();
     }
-    
-        for (Tower* tower : towers)
+
+    for (Tower* tower : towers)
+    {
+        tower->update();
+
+        if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_2))
         {
-            if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_2))
+            if (tower->get_position().get_distance(mouse_pos) < 100)
             {
-                    if (sqrt(powf(mouse_pos.x - tower->X(), 2) + powf(mouse_pos.y - tower->Y(), 2)) < 100)
-                    {
-                        tower = towers.back();
-                        towers.pop_back();
-                        delete tower;
-                    }
+                tower->m_life.m_life -= 10;
+
+                if (tower->m_life.m_life <= 0)
+                {
+                    *tower = *towers.back();
+                    towers.pop_back();
+
+                    if (towers.size() > 1)
+                        delete towers.back();
+                }
             }
         }
+    }
 }
 
-void Game::display()
+void Game::display() const
 {   
     for (Tower* tower : towers)
     {
-        std::cout << "x: " << tower->X() << " y: " << tower->Y() << std::endl;
-        gpDrawTexture(gp, tower->get_texture(), GPVector2{tower->X(), tower->Y()}, true, GPColor{1, 1, 1, 1});
+        std::cout << tower->get_position().x << std::endl;
+        gpDrawTexture(gp, tower->get_texture(), GPVector2(tower->get_position()), true, GPColor{1, 1, 1, 1});
+    }
+
+    for (Enemy* enemy : enemies)
+    {
+        gpDrawTexture(gp, enemy->get_texture(), GPVector2(enemy->get_position()), true, GPColor{1, 1, 1, 1});
     }
 }

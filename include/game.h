@@ -20,9 +20,7 @@ class Game
     public:
         Game(GPLib* gp) : gp(gp), RM(RessourceManager(gp)) { }
 
-
-        float   delta_time = 0;
         void    update();
 
-        void    display();
+        void    display() const;
 };

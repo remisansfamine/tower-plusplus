@@ -7,7 +7,8 @@
 enum class TextureType : unsigned int
 {
     TOWER_IDLE = 0,
-    ENEMY_IDLE = 1
+    ENEMY_IDLE = 1,
+    BULLET = 2
 };
 
 class RessourceManager
@@ -21,6 +22,7 @@ class RessourceManager
         {
             textures[(int)TextureType::TOWER_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/tower.jpg"));
             textures[(int)TextureType::ENEMY_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/enemy.png"));
+            textures[(int)TextureType::BULLET] = GPTexture(gpTextureLoadFromFile(gp, "media/bullet.jpg"));
         }
 
         ~RessourceManager()

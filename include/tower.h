@@ -7,11 +7,10 @@
 
 class Tower : public Entity
 {
-    protected:
-        float   m_fire_rate;
-        float   m_range;
-        //int     m_cost;
-
     public:
+        float   m_fire_rate;
+        float   m_cooldown;
+        float   m_range;
+
         Tower(Vector2 position) : Entity(position) { }
 };

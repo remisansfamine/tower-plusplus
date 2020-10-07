@@ -26,3 +26,18 @@ class Vector2
 
         static const Vector2 zero;
 };
+
+class Circle
+{
+    public:
+        float radius;
+        Vector2 center;
+};
+
+class Rectangle
+{
+    public:
+        Vector2 position;
+        float halfwidth;
+        float halfheight;
+};

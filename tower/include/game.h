@@ -4,6 +4,7 @@
 #include "tower.h"
 #include "ressource_manager.h"
 #include <vector>
+#include "bullet.h"
 
 class Game
 {
@@ -16,6 +17,7 @@ class Game
 
         std::vector<Enemy*> enemies;
         std::vector<Tower*> towers;
+        std::vector<Bullet*> bullets;
 
     public:
         Game(GPLib* gp) : gp(gp), RM(RessourceManager(gp)) { }

@@ -10,7 +10,7 @@ class StrongEnemy : public Enemy
         {
             m_life = Life(50);
             m_damage = 25;
-            m_speed = 10;
+            m_speed = 100;
             m_texture = RM.get_texture((unsigned int)TextureType::ENEMY_IDLE);
             m_waypoints[0] = Vector2(0, 0);
             m_waypoints[1] = Vector2(6, 5);

@@ -9,6 +9,7 @@ class Vector2
 
         Vector2() = default;
         Vector2(float x, float y, bool isUnitary = false);
+        Vector2(int x, int y, bool isUnitary = false);
         Vector2(GPVector2 vect, bool isUnitary = false);
 
         float get_square_magnitude() const;

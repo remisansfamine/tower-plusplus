@@ -40,10 +40,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include= "src/main.cpp" />
-    <ClCompile Include= "src/game.cpp" />
-    <ClCompile Include= "src/maths.cpp" />
-    <ClCompile Include= "src/collisions.cpp" />
+    <ClCompile Include="src/main.cpp"/>
+    <ClCompile Include="src/game.cpp"/>
+    <ClCompile Include="src/maths.cpp"/>
+    <ClCompile Include="src/collisions.cpp"/>
+    <ClCompile Include="src/life.cpp"/>
+    <ClCompile Include="src/ressource_manager.cpp"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>

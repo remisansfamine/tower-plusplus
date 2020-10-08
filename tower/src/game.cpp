@@ -16,14 +16,33 @@
 
 #include <gp/gp.h>
 
+std::vector<Vector2> Enemy::m_waypoints;
+std::vector<TowerSlot> Tower::tower_slots;
+
+void Game::start()
+{
+    
+}
+
 void Game::update()
 {
     GPVector2 mouse_pos = gpMousePosition(gp);
 
-    float delta_time = gpGetFrameTime(gp);
+    float delta_time = gpGetFrameTime(gp) * m_game_speed;
 
-    if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1))
-        towers.push_back(new ExplosiveTower(mouse_pos, RM));
+    int count = 0;
+    for (TowerSlot slot : Tower::tower_slots)
+    {  
+        if (c_point_box(mouse_pos, slot.get_collision()))
+        {
+            if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1) && !slot.m_isOccuped)
+            {
+                towers.push_back(new ExplosiveTower(slot.get_collision().position, RM));
+                slot.m_isOccuped = true;
+            }
+        }
+    }
+    
 
     if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_3))
         enemies.push_back(new StrongEnemy(mouse_pos, RM));
@@ -100,8 +119,8 @@ void Game::update()
                     *tower = *towers.back();
                     towers.pop_back();
 
-                    if (towers.size() > 1)
-                        delete towers.back();
+                    // if (towers.size() > 1)
+                    //     delete towers.back(); // Do segfault
                 }
             }
         }
@@ -110,13 +129,25 @@ void Game::update()
 
 void Game::display() const
 {   
+
+    for (int i = 0; i < MAP_WIDTH; i++)
+    {
+        for (int j = 0; j < MAP_HEIGHT; j++)
+        {
+           // std::cout << "i: " << i << " j: " << j << std::endl;
+            gpDrawTexture(gp, m_map.get_texture(i, j), GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GPColor{1, 1, 1, 1});
+        }
+    }
+
     for (Tower* tower : towers)
     {
         gpDrawTexture(gp, tower->get_texture(), GPVector2(tower->get_position()), true, GPColor{1, 1, 1, 1});
     }
 
     for (Bullet* bullet : bullets)
-            gpDrawTexture(gp, bullet->get_texture(), GPVector2(bullet->get_position()), true, GPColor{1, 1, 1, 1});
+    {
+        gpDrawTexture(gp, bullet->get_texture(), GPVector2(bullet->get_position()), true, GPColor{1, 1, 1, 1});
+    }
 
     for (Enemy* enemy : enemies)
     {

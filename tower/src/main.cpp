@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-    GPLib* gp = gpInit(800, 600, "Tower++", GP_VSYNC_ON);
+    GPLib* gp = gpInit(1200, 800, "Tower++", GP_VSYNC_ON);
     std::cout << std::endl; // Force flush stdout
 
     Game game(gp);

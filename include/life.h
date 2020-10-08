@@ -9,7 +9,7 @@ class Life
         float m_life;
         
         Life() = default;
-        Life(float max_life) :  m_max_life(max_life), m_life(max_life) {}
+        Life(float max_life);
 
-        float get_max_life() const { return m_max_life; }
+        float get_max_life() const;
 };

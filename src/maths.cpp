@@ -14,6 +14,11 @@ Vector2::Vector2(float x, float y, bool isUnitary): x(x), y(y)
     if (isUnitary)
         normalize();
 }
+Vector2::Vector2(int x, int y, bool isUnitary): x(x), y(y)
+{
+    if (isUnitary)
+        normalize();
+}
 Vector2::Vector2(GPVector2 vect, bool isUnitary) : x(vect.x), y(vect.y)
 {
     if (isUnitary)

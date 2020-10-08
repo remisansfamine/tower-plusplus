@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "externals/include", "include"
+                "include",
+                "externals/include"
             ],
             "defines": [],
             "windowsSdkVersion": "10.0.19041.0",

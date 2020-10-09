@@ -44,7 +44,8 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
             if (current >= '0' && current <= '9')
             {
                 m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH);
-                Enemy::m_waypoints.push_back(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2));
+                Enemy::m_waypoints[current - '0'] = Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2);
+                //Enemy::m_waypoints.push_back(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2));
                 break;
             }
             m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::ERROR);       

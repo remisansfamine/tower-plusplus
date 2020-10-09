@@ -8,7 +8,7 @@ StrongEnemy::StrongEnemy(Vector2 position, const ResourceManager& RM) : Enemy(po
     m_texture = RM.get_texture(TextureType::ENEMY_IDLE);
 }
 
-void StrongEnemy::update()
+void StrongEnemy::update(float delta_time)
 {
-    move();
+    move(delta_time);
 }

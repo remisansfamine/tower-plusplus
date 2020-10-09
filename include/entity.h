@@ -21,7 +21,6 @@ class Entity
         GPTexture   m_texture;
         Renderer*   m_renderer = nullptr;
     public:
-        float   delta_time;
         Life    m_life;
 
         Entity(Vector2 position);
@@ -33,5 +32,5 @@ class Entity
         float Y() const;
         Vector2 get_position() const;
 
-        virtual void update() = 0;
+        virtual void update(float delta_time) = 0;
 };

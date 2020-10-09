@@ -8,7 +8,7 @@ HealerEnemy::HealerEnemy(Vector2 position, const ResourceManager& RM) : Enemy(po
     m_texture = RM.get_texture(TextureType::ENEMY_IDLE);
 }
 
-void HealerEnemy::update()
+void HealerEnemy::update(float delta_time)
 {
-    move();
+    move(delta_time);
 }

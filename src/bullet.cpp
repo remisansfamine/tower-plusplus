@@ -8,12 +8,12 @@ Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManag
     m_damage = damage;
 }
 
-void Bullet::update() 
+void Bullet::update(float delta_time) 
 {
-    move();
+    move(delta_time);
 }
 
-void Bullet::move()
+void Bullet::move(float delta_time)
 {
     m_direction = (m_target->get_position() - m_position).normalize();
     m_position += m_direction * m_speed * delta_time;

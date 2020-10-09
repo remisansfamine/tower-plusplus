@@ -9,7 +9,7 @@ WeakEnemy::WeakEnemy(Vector2 position, const ResourceManager& RM) : Enemy(positi
     m_direction = Vector2(5, 3, true);
 }
 
-void WeakEnemy::update()
+void WeakEnemy::update(float delta_time)
 {
-    move();
+    move(delta_time);
 }

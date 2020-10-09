@@ -13,7 +13,7 @@ class Bullet : public Entity
 
         Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM);
 
-        void update() override;
+        void update(float delta_time) override;
 
-        void move();
+        void move(float delta_time);
 };

@@ -28,22 +28,26 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
     switch (current)
     {
         case '#':
-            m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::GRASS);
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::GRASS);
             break;
         
+        case 'P':
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH);
+            break;
+
         case 'O':
             Tower::tower_slots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
-            m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::TOWER_SLOT);
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::TOWER_SLOT);
             break;
-        
+
         default:
             if (current >= '0' && current <= '9')
             {
-                m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::PATH);
+                m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH);
                 Enemy::m_waypoints.push_back(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2));
                 break;
             }
-            m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::ERROR);       
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::ERROR);       
     }
 }
 

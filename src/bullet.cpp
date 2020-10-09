@@ -3,7 +3,7 @@
 Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM)
 : Entity(position), m_target(enemy)
 {
-    m_texture = RM.get_texture((unsigned int)TextureType::BULLET);
+    m_texture = RM.get_texture(TextureType::BULLET);
     m_speed = 250;
     m_damage = damage;
 }

@@ -9,6 +9,8 @@ ResourceManager::ResourceManager(GPLib* gp) : gp(gp)
     textures[(unsigned int)TextureType::PATH] = GPTexture(gpTextureLoadFromFile(gp, "media/path.png"));
     textures[(unsigned int)TextureType::GRASS] = GPTexture(gpTextureLoadFromFile(gp, "media/grass.png"));
 
+    textures[(unsigned int)TextureType::BUTTON] = GPTexture(gpTextureLoadFromFile(gp, "media/button.png"));
+    
     textures[(unsigned int)TextureType::ERROR] = GPTexture(gpTextureLoadFromFile(gp, "media/error.png"));
 }
 
@@ -18,7 +20,7 @@ ResourceManager::~ResourceManager()
         gpTextureUnload(gp, texture);
 }
 
-const GPTexture ResourceManager::get_texture(unsigned int index) const
+const GPTexture ResourceManager::get_texture(TextureType type) const
 {
-    return textures[index];
+    return textures[(unsigned int)type];
 }

@@ -64,7 +64,7 @@
         <ClCompile Include="src/strong_enemy.cpp"/>
         <ClCompile Include="src/healer_enemy.cpp"/>
 
-
+    <ClCompile Include="src/button.cpp"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>

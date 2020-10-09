@@ -1,10 +1,11 @@
 #pragma once
 
 #include "tower_slot.h"
-#include "game.h"
 #include "entity.h"
 
-#include "ressource_manager.h"
+#include <vector>
+
+#include "resource_manager.h"
 
 class Tower : public Entity
 {
@@ -15,5 +16,5 @@ class Tower : public Entity
         float   m_cooldown;
         float   m_range;
 
-        Tower(Vector2 position) : Entity(position) { }
+        Tower(Vector2 position);
 };

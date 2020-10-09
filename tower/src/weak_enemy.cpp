@@ -1,6 +1,6 @@
 #include "weak_enemy.h"
 
-WeakEnemy::WeakEnemy(Vector2 position, const RessourceManager& RM) : Enemy(position)
+WeakEnemy::WeakEnemy(Vector2 position, const ResourceManager& RM) : Enemy(position)
 {
     m_life = Life(25);
     m_damage = 10;

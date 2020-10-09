@@ -4,10 +4,10 @@
 
 #include <gp/gp.h>
 
-#include "game.h"
 #include "maths.h"
-#include "render_manager.h"
 #include "life.h"
+
+class Renderer;
 
 class Entity
 {
@@ -24,14 +24,14 @@ class Entity
         float   delta_time;
         Life    m_life;
 
-        Entity(Vector2 position) : m_position(position) {}
+        Entity(Vector2 position);
 
-        GPTexture get_texture() const { return m_texture; }
+        GPTexture get_texture() const;
 
-        float get_damage() const { return m_damage; }
-        float X() const { return m_position.x; }
-        float Y() const { return m_position.y; }
-        Vector2 get_position() const { return m_position; }
+        float get_damage() const;
+        float X() const;
+        float Y() const;
+        Vector2 get_position() const;
 
         virtual void update() = 0;
 };

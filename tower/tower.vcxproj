@@ -45,7 +45,26 @@
     <ClCompile Include="src/maths.cpp"/>
     <ClCompile Include="src/collisions.cpp"/>
     <ClCompile Include="src/life.cpp"/>
-    <ClCompile Include="src/ressource_manager.cpp"/>
+
+    <ClCompile Include="src/resource_manager.cpp"/>
+    <ClCompile Include="src/render_manager.cpp"/>
+    <ClCompile Include="src/entity_manager.cpp"/>
+
+    <ClCompile Include="src/map.cpp"/>
+
+    <ClCompile Include="src/entity.cpp"/>
+      <ClCompile Include="src/tower.cpp"/>
+      <ClCompile Include="src/tower_slot.cpp"/>
+        <ClCompile Include="src/standard_tower.cpp"/>
+        <ClCompile Include="src/explosive_tower.cpp"/>
+        <ClCompile Include="src/slowing_tower.cpp"/>
+      <ClCompile Include="src/bullet.cpp"/>
+      <ClCompile Include="src/enemy.cpp"/>
+        <ClCompile Include="src/weak_enemy.cpp"/>
+        <ClCompile Include="src/strong_enemy.cpp"/>
+        <ClCompile Include="src/healer_enemy.cpp"/>
+
+
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Targets" />
 </Project>

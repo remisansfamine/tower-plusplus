@@ -1,10 +1,9 @@
 #include <fstream>
 
 #include "map.h"
-
 #include "enemy.h"
 
-Map::Map(const RessourceManager& RM)
+void    Map::generateMap(const ResourceManager& RM)
 {
     std::ifstream infile("media/map.txt");
     int hor_index = 0, vert_index = 0;
@@ -17,10 +16,24 @@ Map::Map(const RessourceManager& RM)
             hor_index = 0;
             vert_index++;
         }
+        
+        interpretTile(RM, hor_index, vert_index, current);
+
+        hor_index++;
+    }
+}
+
+void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_index, char current)
+{
     switch (current)
     {
         case '#':
             m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::GRASS);
+            break;
+        
+        case 'O':
+            Tower::tower_slots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
+            m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::TOWER_SLOT);
             break;
         
         default:
@@ -28,10 +41,15 @@ Map::Map(const RessourceManager& RM)
             {
                 m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::PATH);
                 Enemy::m_waypoints.push_back(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2));
+                break;
             }
+            m_tiles[hor_index][vert_index] = RM.get_texture((unsigned int)TextureType::ERROR);       
     }
-    hor_index++;
-    }
+}
+
+Map::Map(const ResourceManager& RM)
+{
+    generateMap(RM);
 }
 
 const GPTexture Map::get_texture(unsigned int hor_index, unsigned int vert_index) const

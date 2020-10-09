@@ -5,6 +5,9 @@
 #include "render_manager.h"
 #include "entity_manager.h"
 
+#define SCREEN_WIDTH 1200
+#define SCREEN_HEIGHT 800
+
 class Game
 {
     private:
@@ -22,7 +25,7 @@ class Game
         Map                     m_map;
 
     public:
-        Game(GPLib* gp) : gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)) { start(); }
+        Game(GPLib* gp);
 
         void    start();
 

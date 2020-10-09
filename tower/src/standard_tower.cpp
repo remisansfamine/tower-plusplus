@@ -10,7 +10,7 @@ StandardTower::StandardTower(Vector2 position, const ResourceManager& RM)
     m_texture = RM.get_texture(TextureType::TOWER_IDLE);
 }
 
-void StandardTower::update()
+void StandardTower::update(float delta_time)
 {
     m_cooldown -= delta_time;
 }

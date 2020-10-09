@@ -21,12 +21,16 @@
 
 #include <gp/gp.h>
 
-std::vector<Vector2> Enemy::m_waypoints;
 std::vector<TowerSlot> Tower::tower_slots;
 
-void Game::start()
+Game::Game(GPLib* gp)
+: gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager))
 {
     m_spawn_cooldown = m_spawn_rate;
+
+    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager));
+    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 7 / 2, TILE_SIZE}, m_ResourceManager));
+    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 3 / 2, TILE_SIZE}, m_ResourceManager));
 }
 
 void Game::update()
@@ -37,11 +41,6 @@ void Game::update()
         m_isPaused = !m_isPaused;
 
     float delta_time = gpGetFrameTime(gp) * (m_isPaused ? 0 : m_game_speed);
-
-    if (gpKeyIsPressed(gp, GP_KEY_L))
-    {
-        m_EntityManager.createButton(new Button(gp, mouse_pos, m_ResourceManager));
-    }
 
     int count = 0;
     for (TowerSlot slot : Tower::tower_slots)
@@ -72,8 +71,7 @@ void Game::update()
 
     for (Enemy* enemy : m_EntityManager.m_enemies)
     {
-        enemy->delta_time = delta_time;
-        enemy->update();
+        enemy->update(delta_time);
 
         if (enemy->m_life.m_life <= 0)
         {
@@ -83,8 +81,7 @@ void Game::update()
 
     for (Bullet* bullet : m_EntityManager.m_bullets)
     {
-        bullet->delta_time = delta_time;
-        bullet->update();
+        bullet->update(delta_time);
 
         for (Enemy* enemy : m_EntityManager.m_enemies)
         {
@@ -105,7 +102,6 @@ void Game::update()
     
     for (Tower* tower : m_EntityManager.m_towers)
     {
-        tower->delta_time = delta_time;
         for (Enemy* enemy : m_EntityManager.m_enemies)
         {
             if (c_circle_point({tower->m_range, tower->get_position()}, enemy->get_position()))
@@ -121,7 +117,7 @@ void Game::update()
             }
         }
 
-        tower->update();
+        tower->update(delta_time);
 
         if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_2))
         {

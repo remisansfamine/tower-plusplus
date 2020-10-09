@@ -7,5 +7,5 @@ class SlowingTower : public Tower
     public:
         SlowingTower(Vector2 position, const ResourceManager& RM);
 
-        void update() override;
+        void update(float delta_time) override;
 };

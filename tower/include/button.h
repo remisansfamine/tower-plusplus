@@ -9,6 +9,10 @@ class Button
 {
     private:
         GPLib*      m_gp;
+        bool        m_is_pressed = false;
+        bool        m_is_released = false;
+        bool        m_is_down = false;
+        bool        m_is_up = true;
 
     public:
         GPTexture   m_texture;

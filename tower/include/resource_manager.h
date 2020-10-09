@@ -12,6 +12,7 @@ enum class TextureType : unsigned int
     BULLET,
     PATH,
     GRASS,
+    BUTTON,
 
     ERROR
 };
@@ -26,5 +27,5 @@ class ResourceManager
         ResourceManager(GPLib* gp);
 
         ~ResourceManager();
-        const GPTexture get_texture(unsigned int index) const;
+        const GPTexture get_texture(TextureType type) const;
 };

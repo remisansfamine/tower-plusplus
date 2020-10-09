@@ -6,6 +6,7 @@
 #include "maths.h"
 #include "collisions.h"
 #include "game.h"
+
 #include "slowing_tower.h"
 #include "explosive_tower.h"
 #include "standard_tower.h"
@@ -15,6 +16,8 @@
 #include "weak_enemy.h"
 
 #include "bullet.h"
+
+#include "button.h"
 
 #include <gp/gp.h>
 
@@ -35,6 +38,11 @@ void Game::update()
 
     float delta_time = gpGetFrameTime(gp) * (m_isPaused ? 0 : m_game_speed);
 
+    if (gpKeyIsPressed(gp, GP_KEY_L))
+    {
+        m_EntityManager.createButton(new Button(gp, mouse_pos, m_ResourceManager));
+    }
+
     int count = 0;
     for (TowerSlot slot : Tower::tower_slots)
     {  
@@ -42,10 +50,15 @@ void Game::update()
         {
             if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1) && !slot.m_isOccuped)
             {
-                m_EntityManager.m_towers.push_back(new SlowingTower(slot.get_collision().position, m_ResourceManager));
+                m_EntityManager.createTower(new SlowingTower(slot.get_position(), m_ResourceManager));
                 slot.m_isOccuped = true;
             }
         }
+    }
+
+    for (Button* button : m_EntityManager.m_buttons)
+    {
+        button->update();
     }
     
     m_spawn_cooldown -= delta_time;
@@ -53,8 +66,8 @@ void Game::update()
     if (m_spawn_cooldown <= 0 || gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_3))
     {
         m_spawn_cooldown = m_spawn_rate;
-        m_spawn_rate -= delta_time;
-        m_EntityManager.m_enemies.push_back(new StrongEnemy(Enemy::m_waypoints[0], m_ResourceManager));
+        m_spawn_rate -= delta_time * 2;
+        m_EntityManager.createEnemy(new StrongEnemy(Enemy::m_waypoints[0], m_ResourceManager));
     }
 
     for (Enemy* enemy : m_EntityManager.m_enemies)
@@ -81,20 +94,15 @@ void Game::update()
 
                 m_EntityManager.destroyBullet(bullet);
 
-                // if (bullets.size() > 1)
-                //     delete bullets.back(); // Do segfault
             }
         }
 
         if (!bullet->m_target)
         {
             m_EntityManager.destroyBullet(bullet);
-
-            // if (bullets.size() > 1)
-            //     delete bullets.back(); // Do segfault
         }
     }
-
+    
     for (Tower* tower : m_EntityManager.m_towers)
     {
         tower->delta_time = delta_time;
@@ -104,7 +112,10 @@ void Game::update()
             {
                 if (tower->m_cooldown <= 0)
                 {
-                    m_EntityManager.m_bullets.push_back(new Bullet(tower->get_position(), enemy, tower->get_damage(), m_ResourceManager));
+                    m_EntityManager.createBullet(new Bullet(tower->get_position(),
+                                                            enemy, tower->get_damage(),
+                                                            m_ResourceManager));
+
                     tower->m_cooldown = tower->m_fire_rate;
                 }
             }
@@ -121,9 +132,6 @@ void Game::update()
                 if (tower->m_life.m_life <= 0)
                 {
                     m_EntityManager.destroyTower(tower);
-
-                    // if (towers.size() > 1)
-                    //     delete towers.back(); // Do segfault
                 }
             }
         }
@@ -154,6 +162,11 @@ void Game::display() const
     for (Enemy* enemy : m_EntityManager.m_enemies)
     {
         gpDrawTexture(gp, enemy->get_texture(), GPVector2(enemy->get_position()), true, GPColor{1, 1, 1, 1});
+    }
+
+    for (Button* button : m_EntityManager.m_buttons)
+    {
+        gpDrawTexture(gp, button->m_texture, GPVector2(button->m_rect.position), true, GPColor{1, 1, 1, 1});
     }
 
     m_RendererManager.draw(gp);

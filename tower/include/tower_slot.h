@@ -14,4 +14,6 @@ class TowerSlot
         TowerSlot(Vector2 position);
 
         const Rectangle get_collision() const;
+
+        const Vector2   get_position() const;
 };

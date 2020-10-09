@@ -3,22 +3,21 @@
 #include "map.h"
 #include "resource_manager.h"
 #include "render_manager.h"
-#include <vector>
 #include "entity_manager.h"
 
 class Game
 {
     private:
         bool    m_isPaused = false;
-        float   m_game_speed = 3;
+        float   m_game_speed = 1;
         float   m_spawn_rate = 10;
-        float   m_spawn_rate_modifier = 100;
+        float   m_spawn_rate_modifier = 2;
         float   m_spawn_cooldown;
         int     m_money;
 
         GPLib* gp;
         const ResourceManager   m_ResourceManager;
-        const RendererManager   m_RendererManager;
+        RendererManager         m_RendererManager;
         EntityManager           m_EntityManager;
         Map                     m_map;
 

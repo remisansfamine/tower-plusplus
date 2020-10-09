@@ -1,6 +1,7 @@
 #include "bullet.h"
 
-Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const RessourceManager& RM) : Entity(position), m_target(enemy)
+Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM)
+: Entity(position), m_target(enemy)
 {
     m_texture = RM.get_texture((unsigned int)TextureType::BULLET);
     m_speed = 250;

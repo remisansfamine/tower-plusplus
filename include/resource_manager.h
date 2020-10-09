@@ -16,15 +16,15 @@ enum class TextureType : unsigned int
     ERROR
 };
 
-class RessourceManager
+class ResourceManager
 {
     private:
         GPTexture textures[7];
         GPLib* gp;
 
     public:
-        RessourceManager(GPLib* gp);
+        ResourceManager(GPLib* gp);
 
-        ~RessourceManager();
+        ~ResourceManager();
         const GPTexture get_texture(unsigned int index) const;
 };

@@ -8,9 +8,9 @@
 class Renderer
 {
     public:
-        GPTexture texture;
-        GPVector2 m_position;
-        GPVector2 m_dimension;
+        GPTexture   m_texture;
+        GPVector2   m_position;
+        GPVector2   m_dimension;
 };
 
 class RendererManager
@@ -19,5 +19,6 @@ class RendererManager
         std::vector<Renderer*> renderers;
 
     public:
+        void    draw(GPLib*) const;
 
 };

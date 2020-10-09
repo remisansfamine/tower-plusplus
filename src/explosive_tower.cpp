@@ -1,6 +1,7 @@
 #include "explosive_tower.h"
 
-ExplosiveTower::ExplosiveTower(Vector2 position, const RessourceManager& RM) : Tower(position)
+ExplosiveTower::ExplosiveTower(Vector2 position, const ResourceManager& RM)
+: Tower(position)
 {
     m_life = Life(15);
     m_damage = 10;

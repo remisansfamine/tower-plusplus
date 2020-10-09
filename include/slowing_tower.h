@@ -5,17 +5,7 @@
 class SlowingTower : public Tower
 {
     public:
-        SlowingTower(Vector2 position, const RessourceManager& RM) : Tower(position)
-        {
-            m_life = Life(40);
-            m_damage = 2.5f;
-            m_cooldown = m_fire_rate = 25;
-            m_range = 135;
-            m_texture = RM.get_texture((unsigned int)TextureType::TOWER_IDLE);
-        }
+        SlowingTower(Vector2 position, const ResourceManager& RM);
 
-        void update() override
-        {
-            m_cooldown -= delta_time * 100;
-        }
+        void update() override;
 };

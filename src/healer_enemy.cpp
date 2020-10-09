@@ -1,6 +1,6 @@
 #include "healer_enemy.h"
 
-HealerEnemy::HealerEnemy(Vector2 position, const RessourceManager& RM) : Enemy(position)
+HealerEnemy::HealerEnemy(Vector2 position, const ResourceManager& RM) : Enemy(position)
 {
     m_life = Life(25);
     m_damage = 5;

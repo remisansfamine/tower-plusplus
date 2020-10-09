@@ -1,6 +1,6 @@
 #include "entity.h"
 
-//Entity::Entity(Vector2 position) : m_position(position) {}
+Entity::Entity(Vector2 position) : m_position(position) {}
 
 GPTexture Entity::get_texture() const
 {

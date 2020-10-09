@@ -1,6 +1,6 @@
-#include "ressource_manager.h"
+#include "resource_manager.h"
 
-RessourceManager::RessourceManager(GPLib* gp) : gp(gp)
+ResourceManager::ResourceManager(GPLib* gp) : gp(gp)
 {
     textures[(unsigned int)TextureType::TOWER_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/tower.png"));
     textures[(unsigned int)TextureType::TOWER_SLOT] = GPTexture(gpTextureLoadFromFile(gp, "media/tower_slot.png"));
@@ -12,13 +12,13 @@ RessourceManager::RessourceManager(GPLib* gp) : gp(gp)
     textures[(unsigned int)TextureType::ERROR] = GPTexture(gpTextureLoadFromFile(gp, "media/error.png"));
 }
 
-RessourceManager::~RessourceManager()
+ResourceManager::~ResourceManager()
 {
     for (GPTexture texture : textures)
         gpTextureUnload(gp, texture);
 }
 
-const GPTexture RessourceManager::get_texture(unsigned int index) const
+const GPTexture ResourceManager::get_texture(unsigned int index) const
 {
     return textures[index];
 }

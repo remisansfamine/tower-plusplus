@@ -12,11 +12,11 @@ class Game
 {
     private:
         bool    m_isPaused = false;
-        float   m_game_speed = 1;
+        float   m_game_speed = 3;
         float   m_spawn_rate = 10;
         float   m_spawn_rate_modifier = 2;
         float   m_spawn_cooldown;
-        int     m_money;
+        int     m_money = 5;
 
         GPLib* gp;
         const ResourceManager   m_ResourceManager;

@@ -6,9 +6,9 @@
 #include "tower.h"
 #include <fstream>
 
-#define MAP_WIDTH 15
-#define MAP_HEIGHT 10
-#define TILE_SIZE 80
+#define MAP_WIDTH 20
+#define MAP_HEIGHT 14
+#define TILE_SIZE 60
 
 class Map
 {

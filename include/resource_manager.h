@@ -10,8 +10,14 @@ enum class TextureType : unsigned int
     TOWER_SLOT,
     ENEMY_IDLE,
     BULLET,
-    PATH,
     GRASS,
+    PATH_EAST,
+    PATH_NORTH,
+    PATH_C_ULRB,
+    PATH_C_LL,
+    PATH_C_LR,
+    PATH_C_UL,
+    PATH_C_UR,
     BUTTON,
 
     ERROR

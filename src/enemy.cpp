@@ -1,7 +1,7 @@
 #include "enemy.h"
 
 //std::vector<Vector2> Enemy::m_waypoints;
-std::array<Vector2, 9> Enemy::m_waypoints;
+std::array<Vector2, 26> Enemy::m_waypoints;
 
 Enemy::Enemy(Vector2 position) : Entity(position) { }
 
@@ -15,4 +15,9 @@ void Enemy::move(float delta_time)
         m_current_waypoint++;
 
     m_position += m_direction * m_speed * delta_time;
+}
+
+int Enemy::get_reward() const
+{
+    return m_reward;
 }

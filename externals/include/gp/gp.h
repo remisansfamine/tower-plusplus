@@ -93,6 +93,14 @@ typedef struct GPSound
     int nbFrames;
 } GPSound;
 
+typedef int GPSoundChannelId;
+
+typedef struct GPSoundChannelSettings
+{
+    float volume;
+    int loopCount; // -1 to loop indefinitely
+} GPSoundChannelSettings;
+
 typedef enum GPKey
 {
     // Printable keys
@@ -242,11 +250,15 @@ typedef enum GPBlendMode
 
 enum GPInitFlags
 {
-    GP_VSYNC_ON = 1 << 0
+    GP_VSYNC_ON = 1 << 0,
+
+    // Deprecation flags (will be removed later)
+    GP_DEPRECATION_BOTTOM_LEFT_SRC = 1 << 20
 };
 
 GP_API GPColor GP_CWHITE;
 GP_API GPColor GP_CBLACK;
+GP_API GPSoundChannelSettings GP_SOUND_CHANNEL_DEFAULTS;
 
 GP_API GPLib* gpInit(int displayWidth, int displayHeight, const char* windowTitle, int initFlags);
 GP_API void gpShutdown(GPLib* gp);
@@ -272,6 +284,7 @@ GP_API void gpDrawCircleFilled(GPLib* gp, GPVector2 center, float radius, GPColo
 GP_API void gpDrawTexture(GPLib* gp, GPTexture texture, GPVector2 pos, bool centered, GPColor tint);
 GP_API void gpDrawTextureEx(GPLib* gp, GPTexture texture, GPRect src, GPVector2 pos, float rotate, GPVector2 scale, GPVector2* pivot, GPColor tint);
 GP_API void gpDrawTextureEx2(GPLib* gp, GPTexture texture, GPRect src, GPRect dst, GPColor tint);
+GP_API void gpDrawTextureEx3(GPLib* gp, GPTexture texture, GPRect src, GPRect dst, float rot, GPVector2* pivot, GPColor tint);
 GP_API void gpDrawText(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, const char* format, ...);
 GP_API void gpDrawTextV(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, const char* format, va_list vargs);
 
@@ -310,9 +323,14 @@ GP_API bool gpMouseButtonIsDown(GPLib* gp, GPMouseButton button);
 GP_API bool gpMouseButtonIsUp(GPLib* gp, GPMouseButton button);
 GP_API bool gpMouseButtonIsReleased(GPLib* gp, GPMouseButton button);
 
+GP_API void gpSetMasterVolume(GPLib* gp, float volume);
 GP_API GPSound gpSoundLoad(GPLib* gp, const char* soundFile);
 GP_API void gpSoundUnload(GPLib* gp, GPSound sound);
-GP_API void gpSoundPlay(GPLib* gp, GPSound sound);
+GP_API GPSoundChannelId gpSoundPlay(GPLib* gp, GPSound sound);
+GP_API GPSoundChannelId gpSoundPlayEx(GPLib* gp, GPSound sound, GPSoundChannelSettings settings);
+GP_API void gpSoundChannelStop(GPLib* gp, GPSoundChannelId id);
+GP_API GPSoundChannelSettings gpSoundChannelGet(GPLib* gp, GPSoundChannelId id);
+GP_API void gpSoundChannelSet(GPLib* gp, GPSoundChannelId id, GPSoundChannelSettings settings);
 
 #if defined(__cplusplus)
 }

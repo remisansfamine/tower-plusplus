@@ -14,14 +14,18 @@ enum class TowerType
     EXPLOSIVE
 };
 
+class Enemy;
+
 class Tower : public Entity
 {
     public:
         static std::vector<TowerSlot> m_tower_slots;
 
+        Enemy*  m_target = nullptr;
         float   m_fire_rate;
         float   m_cooldown;
         float   m_range;
+        float   m_angle;
 
         Tower(Vector2 position);
 

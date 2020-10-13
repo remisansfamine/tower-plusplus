@@ -2,6 +2,8 @@
 
 #include <gp/gp.h>
 
+#define M_PI 3.14159265359
+
 class Vector2
 {
     public:

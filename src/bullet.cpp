@@ -11,6 +11,10 @@ Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManag
 void Bullet::update(float delta_time) 
 {
     move(delta_time);
+
+    Vector2 vect = m_target->get_position() - get_position();
+
+    m_angle = atan2(vect.y, vect.x);
 }
 
 void Bullet::move(float delta_time)

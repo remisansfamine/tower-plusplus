@@ -72,14 +72,14 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
 Map::Map(const ResourceManager& RM)
 {
     generateTilemap(RM);
-    generateWaypoints();
+    generateWaypoints(RM);
 }
 
-void    Map::generateWaypoints() const
+void    Map::generateWaypoints(const ResourceManager& RM)
 {
     std::ifstream infile("media/waypoint.txt");
     int hor_index = 0, vert_index = 0;
-
+    int last_hor_index = 0, last_vert_index = 0;
     char current, last = 0;
     while (infile >> current)
     {
@@ -92,15 +92,22 @@ void    Map::generateWaypoints() const
         if (current >= 'A' && current <= 'Z')
         {
             if (current > last)
+            {
+                last_hor_index = hor_index;
+                last_vert_index = vert_index;
                 last = current;
+            }
 
             Enemy::m_waypoints[current - 'A'] = Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2);
         }
         hor_index++;
     }
 
-    if (last >= 'A')
-        Enemy::m_waypoints_count = last - 'A' + 1;
+    if (last < 'B')
+        return;
+    
+    Enemy::m_waypoints_count = last - 'A' + 1;
+    m_tiles[last_hor_index][last_vert_index] = RM.get_texture(TextureType::CASTLE);
 }
 
 const GPTexture Map::get_texture(unsigned int hor_index, unsigned int vert_index) const

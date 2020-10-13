@@ -9,6 +9,8 @@ class Bullet : public Entity
         float   m_speed;
         
     public:
+        float   m_angle;
+
         Enemy*  m_target = nullptr;
 
         Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM);

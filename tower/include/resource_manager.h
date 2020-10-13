@@ -23,6 +23,7 @@ enum class TextureType : unsigned int
     PATH_C_UL,
     PATH_C_UR,
     BUTTON,
+    CASTLE,
 
     ERROR
 };

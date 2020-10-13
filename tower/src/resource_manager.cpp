@@ -25,6 +25,8 @@ ResourceManager::ResourceManager(GPLib* gp) : gp(gp)
     textures[(unsigned int)TextureType::PATH_C_ULRB] = GPTexture(gpTextureLoadFromFile(gp, "media/pathCornerULRB.png"));
 
     textures[(unsigned int)TextureType::BUTTON] = GPTexture(gpTextureLoadFromFile(gp, "media/button.png"));
+
+    textures[(unsigned int)TextureType::CASTLE] = GPTexture(gpTextureLoadFromFile(gp, "media/castle.png"));
     
     textures[(unsigned int)TextureType::ERROR] = GPTexture(gpTextureLoadFromFile(gp, "media/error.png"));
 }

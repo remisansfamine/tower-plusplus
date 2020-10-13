@@ -12,7 +12,8 @@ class Enemy : public Entity
         float   m_speed;
         int     m_current_waypoint = 0;
         int     m_reward;
-        Rectangle   m_rect;
+        int     m_libebar_offset = 5;
+        Rectangle   m_rect = {{0, 0}, 32, 32};
         
     public:
         static std::array<Vector2, 26>  m_waypoints;
@@ -25,4 +26,6 @@ class Enemy : public Entity
         int     get_reward() const;
 
         float   get_halfsize() const;
+
+        int     get_lifebar_offert() const;
 };

@@ -17,7 +17,7 @@ class Map
         
         void    generateTilemap(const ResourceManager& RM);
 
-        void    generateWaypoints() const;
+        void    generateWaypoints(const ResourceManager& RM);
 
         void    interpretTile(const ResourceManager& RM, int hor_index, int vert_index, char current);
 

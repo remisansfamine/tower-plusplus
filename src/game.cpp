@@ -22,14 +22,14 @@
 
 #include <gp/gp.h>
 
-int Game::m_money = 5;
+int Game::m_money = 10;
 
 Game::Game(GPLib* gp)
 : gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)), m_EntityManager(EntityManager(m_ResourceManager))
 {
-    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 7 / 2, TILE_SIZE}, m_ResourceManager, TowerType::STANDARD));
-    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager, TowerType::SLOWING));
-    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 3 / 2, TILE_SIZE}, m_ResourceManager, TowerType::EXPLOSIVE));
+    m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 4, TILE_SIZE}, m_ResourceManager, TowerType::STANDARD));
+    m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager, TowerType::SLOWING));
+    m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE, TILE_SIZE}, m_ResourceManager, TowerType::EXPLOSIVE));
 }
 
 void Game::update()
@@ -39,7 +39,7 @@ void Game::update()
     if (gpKeyIsPressed(gp, GP_KEY_P))
         m_isPaused = !m_isPaused;
 
-    if (gpKeyIsPressed(gp, GP_KEY_LEFT))
+    if (gpKeyIsPressed(gp, GP_KEY_LEFT) && m_game_speed > 0)
         m_game_speed -= 0.5f;
 
     if (gpKeyIsPressed(gp, GP_KEY_RIGHT))
@@ -47,21 +47,33 @@ void Game::update()
 
     float delta_time = gpGetFrameTime(gp) * (m_isPaused ? 0 : m_game_speed);
 
-    int count = 0;
-    for (TowerSlot* slot : Tower::m_tower_slots)
+    for (TowerSlot& slot : Tower::m_tower_slots)
     {  
-        if (c_point_box(mouse_pos, slot->get_collision()) && m_money >= 5)
+        if (!m_ButtonManager.m_current || slot.m_isOccuped)
+            continue;
+
+        if (c_point_box(mouse_pos, slot.get_collision()))
         {
-            if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1) && !slot->m_isOccuped)
+            m_money -= m_ButtonManager.m_current->get_price();
+            slot.m_isOccuped = true;
+            switch (m_ButtonManager.m_current->get_type())
             {
-                m_money -= 5;
-                m_EntityManager.createTower(new SlowingTower(slot->get_position(), m_ResourceManager));
-                slot->m_isOccuped = true;
+                case TowerType::STANDARD:
+                    m_EntityManager.createTower(new StandardTower(slot.get_position(), m_ResourceManager));
+                    break;
+
+                case TowerType::SLOWING:
+                    m_EntityManager.createTower(new SlowingTower(slot.get_position(), m_ResourceManager));
+                    break;
+
+                case TowerType::EXPLOSIVE:
+                    m_EntityManager.createTower(new ExplosiveTower(slot.get_position(), m_ResourceManager));
+                    break;
             }
         }
     }
 
-    for (Button* button : m_EntityManager.m_buttons)
+    for (Button* button : m_ButtonManager.m_buttons)
     {
         if (!button)
             continue;
@@ -97,7 +109,7 @@ void Game::update()
             if (!enemy)
                 continue;
 
-            if (c_point_box(bullet->get_position(), Rectangle{enemy->get_position(), 32, 32}))
+            if (c_point_box(bullet->get_position(), Rectangle{enemy->get_position(), enemy->get_halfsize(), enemy->get_halfsize()}))
             {
                 enemy->m_life.m_life -= bullet->get_damage();
 
@@ -105,10 +117,8 @@ void Game::update()
             }
         }
 
-        /*if (!bullet->m_target)
-        {
+        if (bullet->m_target->m_life.m_life <= 0)
             m_EntityManager.destroyBullet(bullet);
-        }*/
     }
     
     for (Tower* tower : m_EntityManager.m_towers)
@@ -184,9 +194,18 @@ void Game::display() const
                 continue;
 
         gpDrawTexture(gp, enemy->get_texture(), GPVector2(enemy->get_position()), true, GPColor{1, 1, 1, 1});
+        
+        GPRect rect = {enemy->get_position().x - enemy->get_halfsize(), enemy->get_position().y + enemy->get_halfsize() + 5, enemy->get_halfsize() * 2, enemy->get_halfsize() / 4};
+        gpDrawRectFilled(gp, rect, GPColor{1, 1, 1, 1});
+
+        rect.w *= enemy->m_life.m_life / enemy->m_life.get_max_life();
+        gpDrawRectFilled(gp, rect, GPColor{1, 0, 0, 1});
+
+        rect.w /= enemy->m_life.m_life / enemy->m_life.get_max_life();
+        gpDrawRect(gp, rect, GPColor{0, 0, 0, 1});
     }
 
-    for (Button* button : m_EntityManager.m_buttons)
+    for (Button* button : m_ButtonManager.m_buttons)
     {
         if (!button)
                 continue;

@@ -12,6 +12,7 @@ class Enemy : public Entity
         float   m_speed;
         int     m_current_waypoint = 0;
         int     m_reward;
+        Rectangle   m_rect;
         
     public:
         static std::array<Vector2, 26>  m_waypoints;
@@ -22,4 +23,6 @@ class Enemy : public Entity
         void    move(float delta_time);
 
         int     get_reward() const;
+
+        float   get_halfsize() const;
 };

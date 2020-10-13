@@ -10,8 +10,6 @@
 #include "healer_enemy.h"
 #include "weak_enemy.h"
 
-#include "button.h"
-
 EntityManager::EntityManager(const ResourceManager& RM)
 : m_ResourceManager(RM)
 {
@@ -33,9 +31,6 @@ EntityManager::~EntityManager()
 
     for (Bullet* bullet : m_bullets)
         destroyBullet(bullet);
-
-    for (Button* button : m_buttons)
-        destroyButton(button);
 }
 
 void    EntityManager::update(float delta_time)
@@ -92,11 +87,6 @@ void    EntityManager::createBullet(Bullet* bullet)
     m_bullets.push_back(bullet);
 }
 
-void    EntityManager::createButton(Button* button)
-{
-    m_buttons.push_back(button);
-}
-
 void    EntityManager::destroyTower(Tower* tower)
 {
     if (m_towers.size() == 0)
@@ -123,14 +113,4 @@ void    EntityManager::destroyBullet(Bullet* bullet)
     *bullet = *m_bullets.back();
     delete m_bullets.back();
     m_bullets.pop_back();
-}
-
-void    EntityManager::destroyButton(Button* button)
-{
-    if (m_buttons.size() == 0)
-         return;
-
-    *button = *m_buttons.back();
-    delete m_buttons.back();
-    m_buttons.pop_back();
 }

@@ -17,7 +17,7 @@ enum class TowerType
 class Tower : public Entity
 {
     public:
-        static std::vector<TowerSlot*> m_tower_slots;
+        static std::vector<TowerSlot> m_tower_slots;
 
         float   m_fire_rate;
         float   m_cooldown;

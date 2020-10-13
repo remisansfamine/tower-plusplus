@@ -5,7 +5,10 @@ std::array<Vector2, 26> Enemy::m_waypoints;
 int Enemy::m_waypoints_count = 0;
 
 
-Enemy::Enemy(Vector2 position) : Entity(position) { }
+Enemy::Enemy(Vector2 position) : Entity(position)
+{
+    m_rect = {position, 32, 32};
+}
 
 void Enemy::move(float delta_time)
 {
@@ -22,4 +25,9 @@ void Enemy::move(float delta_time)
 int Enemy::get_reward() const
 {
     return m_reward;
+}
+
+float  Enemy::get_halfsize() const
+{
+    return m_rect.halfheight;
 }

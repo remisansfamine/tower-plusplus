@@ -1,6 +1,6 @@
 #include "tower.h"
 
-std::vector<TowerSlot*> Tower::m_tower_slots;
+std::vector<TowerSlot> Tower::m_tower_slots;
 
 Tower::Tower(Vector2 position) : Entity(position) { }
 

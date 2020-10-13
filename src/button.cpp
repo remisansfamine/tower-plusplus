@@ -1,13 +1,17 @@
+#include "map.h"
+
 #include "button.h"
 
 #include "collisions.h"
+
+#include "button_manager.h"
 
 #include <iostream>
 
 Button::Button(GPLib* gp, Vector2 position)
 : m_gp(gp)
 {
-    m_rect = {position, 50.f, 50.f};
+    m_rect = {position, TILE_SIZE / 2, TILE_SIZE / 2};
 }
 
 void Button::update()
@@ -42,8 +46,11 @@ void Button::is_pressed(Vector2 mouse_pos)
 }
 void Button::is_released()
 {
+    m_ButtonManager->m_current = nullptr;
     m_is_pressed = false;
-    m_is_dragged = false;
+    
+    if (m_is_dragged)
+        is_undragged();
 }
 void Button::is_down(Vector2 mouse_pos)
 {
@@ -62,4 +69,9 @@ void Button::is_hightlighted()
 void Button::is_dragged(Vector2 mouse_pos)
 {
     m_rect.position = mouse_pos;
+}
+
+void Button::is_undragged()
+{
+    m_is_dragged = false;
 }

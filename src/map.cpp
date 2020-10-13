@@ -44,7 +44,7 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
             break;
 
         case '@':
-            Tower::m_tower_slots.push_back(new TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
+            Tower::m_tower_slots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
             m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::TOWER_SLOT);
             break;
         

@@ -5,6 +5,8 @@
 ShopButton::ShopButton(GPLib* gp, Vector2 position, const ResourceManager& RM, TowerType type)
 : Button(gp, position)
 {
+    m_initial_position = position;
+
     m_type = type;
 
     switch (type)
@@ -28,7 +30,41 @@ ShopButton::ShopButton(GPLib* gp, Vector2 position, const ResourceManager& RM, T
 
 void ShopButton::update()
 {
-    m_is_draggable = Game::m_money >= m_price;
-    m_color.a = m_is_draggable ? 1 : 0.5f;
+    if (Game::m_money >= m_price)
+    {
+        m_is_draggable = true;
+        m_color.a = 1;
+    }
+    else
+    {
+        if (m_is_draggable)
+            is_undragged();
+        
+        m_is_draggable = false;
+        m_color.a = 0.5f;
+    }
     Button::update();
+}
+
+void ShopButton::is_pressed(Vector2 mouse_pos)
+{
+    Button::is_pressed(mouse_pos);
+    m_ButtonManager->m_current = this;
+}
+
+void ShopButton::is_undragged()
+{
+    Button::is_undragged();
+    m_rect.position = m_initial_position;
+    m_ButtonManager->m_current = nullptr;
+}
+
+int ShopButton::get_price() const
+{
+    return m_price;
+}
+
+TowerType ShopButton::get_type() const
+{
+    return m_type;
 }

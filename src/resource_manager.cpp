@@ -2,9 +2,9 @@
 
 ResourceManager::ResourceManager(GPLib* gp) : gp(gp)
 {
-    textures[(unsigned int)TextureType::STANDARD_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/tower.png"));
+    textures[(unsigned int)TextureType::STANDARD_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/standard_tower.png"));
     textures[(unsigned int)TextureType::SLOWING_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/slowing_tower.png"));
-    textures[(unsigned int)TextureType::EXPLOSIVE_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/tower.png"));
+    textures[(unsigned int)TextureType::EXPLOSIVE_IDLE] = GPTexture(gpTextureLoadFromFile(gp, "media/explosive_tower.png"));
 
     textures[(unsigned int)TextureType::TOWER_SLOT] = GPTexture(gpTextureLoadFromFile(gp, "media/tower_slot.png"));
 

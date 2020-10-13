@@ -5,7 +5,7 @@ StrongEnemy::StrongEnemy(Vector2 position, const ResourceManager& RM) : Enemy(po
     m_life = Life(50);
     m_reward = 8;
     m_damage = 25;
-    m_speed = 100;
+    m_speed = 50;
     m_texture = RM.get_texture(TextureType::STRONG_ENEMY_IDLE);
 }
 

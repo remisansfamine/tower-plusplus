@@ -5,6 +5,7 @@
 #include "maths.h"
 #include "resource_manager.h"
 
+class ButtonManager;
 class Button
 {
     protected:
@@ -14,6 +15,7 @@ class Button
         bool        m_is_draggable = false;
         Vector2     m_last_mousepos;
     public:
+        ButtonManager*   m_ButtonManager;
         GPTexture   m_texture;
         GPColor     m_color = GP_CWHITE;
         Rectangle   m_rect;
@@ -28,4 +30,5 @@ class Button
         virtual void is_up();
         virtual void is_hightlighted();
         virtual void is_dragged(Vector2 mouse_pos);
+        virtual void is_undragged();
 };

@@ -49,6 +49,7 @@
     <ClCompile Include="src/resource_manager.cpp"/>
     <ClCompile Include="src/render_manager.cpp"/>
     <ClCompile Include="src/entity_manager.cpp"/>
+    <ClCompile Include="src/button_manager.cpp"/>
 
     <ClCompile Include="src/map.cpp"/>
 

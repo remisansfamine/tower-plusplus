@@ -13,5 +13,4 @@ SlowingTower::SlowingTower(Vector2 position, const ResourceManager& RM)
 void SlowingTower::update(float delta_time)
 {
     Tower::update(delta_time);
-
 }

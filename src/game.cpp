@@ -18,19 +18,18 @@
 #include "bullet.h"
 
 #include "button.h"
+#include "shop_button.h"
 
 #include <gp/gp.h>
 
-std::vector<TowerSlot> Tower::tower_slots;
+int Game::m_money = 5;
 
 Game::Game(GPLib* gp)
-: gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager))
+: gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)), m_EntityManager(EntityManager(m_ResourceManager))
 {
-    m_spawn_cooldown = m_spawn_rate;
-
-    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager));
-    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 7 / 2, TILE_SIZE}, m_ResourceManager));
-    m_EntityManager.createButton(new Button(gp, {SCREEN_WIDTH - TILE_SIZE * 3 / 2, TILE_SIZE}, m_ResourceManager));
+    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 7 / 2, TILE_SIZE}, m_ResourceManager, TowerType::STANDARD));
+    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager, TowerType::SLOWING));
+    m_EntityManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 3 / 2, TILE_SIZE}, m_ResourceManager, TowerType::EXPLOSIVE));
 }
 
 void Game::update()
@@ -40,18 +39,24 @@ void Game::update()
     if (gpKeyIsPressed(gp, GP_KEY_P))
         m_isPaused = !m_isPaused;
 
+    if (gpKeyIsPressed(gp, GP_KEY_LEFT))
+        m_game_speed -= 0.5f;
+
+    if (gpKeyIsPressed(gp, GP_KEY_RIGHT))
+        m_game_speed += 0.5f;
+
     float delta_time = gpGetFrameTime(gp) * (m_isPaused ? 0 : m_game_speed);
 
     int count = 0;
-    for (TowerSlot slot : Tower::tower_slots)
+    for (TowerSlot* slot : Tower::m_tower_slots)
     {  
-        if (c_point_box(mouse_pos, slot.get_collision()) && m_money >= 5)
+        if (c_point_box(mouse_pos, slot->get_collision()) && m_money >= 5)
         {
-            if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1) && !slot.m_isOccuped)
+            if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_1) && !slot->m_isOccuped)
             {
                 m_money -= 5;
-                m_EntityManager.createTower(new SlowingTower(slot.get_position(), m_ResourceManager));
-                slot.m_isOccuped = true;
+                m_EntityManager.createTower(new SlowingTower(slot->get_position(), m_ResourceManager));
+                slot->m_isOccuped = true;
             }
         }
     }
@@ -64,14 +69,7 @@ void Game::update()
         button->update();
     }
     
-    m_spawn_cooldown -= delta_time;
-
-    if (m_spawn_cooldown <= 0 || gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_3))
-    {
-        m_spawn_cooldown = m_spawn_rate;
-        m_spawn_rate -= delta_time * 2;
-        m_EntityManager.createEnemy(new StrongEnemy(Enemy::m_waypoints[0], m_ResourceManager));
-    }
+    m_EntityManager.update(delta_time);
 
     for (Enemy* enemy : m_EntityManager.m_enemies)
     {
@@ -107,10 +105,10 @@ void Game::update()
             }
         }
 
-        if (!bullet->m_target)
+        /*if (!bullet->m_target)
         {
             m_EntityManager.destroyBullet(bullet);
-        }
+        }*/
     }
     
     for (Tower* tower : m_EntityManager.m_towers)
@@ -193,7 +191,7 @@ void Game::display() const
         if (!button)
                 continue;
 
-        gpDrawTexture(gp, button->m_texture, GPVector2(button->m_rect.position), true, GPColor{1, 1, 1, 1});
+        gpDrawTexture(gp, button->m_texture, GPVector2(button->m_rect.position), true, button->m_color);
     }
 
     m_RendererManager.draw(gp);

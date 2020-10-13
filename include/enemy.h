@@ -14,8 +14,8 @@ class Enemy : public Entity
         int     m_reward;
         
     public:
-        //static  std::vector<Vector2> m_waypoints;
-        static  std::array<Vector2, 26> m_waypoints;
+        static std::array<Vector2, 26>  m_waypoints;
+        static int                      m_waypoints_count;
 
         Enemy(Vector2 position);
 

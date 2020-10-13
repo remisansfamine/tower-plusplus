@@ -15,7 +15,9 @@ class Map
     private:
         GPTexture m_tiles[MAP_WIDTH][MAP_HEIGHT];
         
-        void    generateMap(const ResourceManager& RM);
+        void    generateTilemap(const ResourceManager& RM);
+
+        void    generateWaypoints() const;
 
         void    interpretTile(const ResourceManager& RM, int hor_index, int vert_index, char current);
 

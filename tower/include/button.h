@@ -7,23 +7,25 @@
 
 class Button
 {
-    private:
+    protected:
         GPLib*      m_gp;
         bool        m_is_pressed = false;
-        bool        m_is_released = false;
-        bool        m_is_down = false;
-        bool        m_is_up = true;
-
+        bool        m_is_dragged = false;
+        bool        m_is_draggable = false;
+        Vector2     m_last_mousepos;
     public:
         GPTexture   m_texture;
+        GPColor     m_color = GP_CWHITE;
         Rectangle   m_rect;
 
-        Button(GPLib* gp, Vector2 position, const ResourceManager& RM);
+        Button(GPLib* gp, Vector2 position);
 
-        void update();
+        virtual void update();
 
-        virtual bool isPressed();
-        virtual bool isReleased();
-        virtual bool isDown();
-        virtual bool isUp();
+        virtual void is_pressed(Vector2 mouse_pos);
+        virtual void is_released();
+        virtual void is_down(Vector2 mouse_pos);
+        virtual void is_up();
+        virtual void is_hightlighted();
+        virtual void is_dragged(Vector2 mouse_pos);
 };

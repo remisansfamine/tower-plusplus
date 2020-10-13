@@ -3,12 +3,12 @@
 #include "map.h"
 #include "enemy.h"
 
-void    Map::generateMap(const ResourceManager& RM)
+void    Map::generateTilemap(const ResourceManager& RM)
 {
-    std::ifstream infile("media/map.txt");
+    std::ifstream infile("media/tilemap.txt");
     int hor_index = 0, vert_index = 0;
 
-    char current, next;
+    char current;
     while (infile >> current)
     {
         if (hor_index == MAP_WIDTH)
@@ -44,25 +44,63 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
             break;
 
         case '@':
-            Tower::tower_slots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
+            Tower::m_tower_slots.push_back(new TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
             m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::TOWER_SLOT);
+            break;
+        
+        case '1':
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH_C_LB);
+            break;
+
+        case '2':
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH_C_RB);
+            break;
+
+        case '3':
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH_C_UL);
+            break;
+
+        case '4':
+            m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH_C_UR);
             break;
 
         default:
-            if (current >= 'A' && current <= 'Z')
-            {
-                m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::PATH_EAST);
-                Enemy::m_waypoints[current - 'A'] = Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2);
-                //Enemy::m_waypoints.push_back(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2));
-                break;
-            }
             m_tiles[hor_index][vert_index] = RM.get_texture(TextureType::ERROR);       
     }
 }
 
 Map::Map(const ResourceManager& RM)
 {
-    generateMap(RM);
+    generateTilemap(RM);
+    generateWaypoints();
+}
+
+void    Map::generateWaypoints() const
+{
+    std::ifstream infile("media/waypoint.txt");
+    int hor_index = 0, vert_index = 0;
+
+    char current, last = 0;
+    while (infile >> current)
+    {
+        if (hor_index == MAP_WIDTH)
+        {
+            hor_index = 0;
+            vert_index++;
+        }
+        
+        if (current >= 'A' && current <= 'Z')
+        {
+            if (current > last)
+                last = current;
+
+            Enemy::m_waypoints[current - 'A'] = Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2);
+        }
+        hor_index++;
+    }
+
+    if (last >= 'A')
+        Enemy::m_waypoints_count = last - 'A' + 1;
 }
 
 const GPTexture Map::get_texture(unsigned int hor_index, unsigned int vert_index) const

@@ -3,8 +3,6 @@
 #include <gp/gp.h>
 #include <vector>
 
-//#include "maths.h"
-
 class Renderer
 {
     public:

@@ -6,16 +6,20 @@
 
 enum class TextureType : unsigned int
 {
-    TOWER_IDLE,
+    STANDARD_IDLE,
+    SLOWING_IDLE,
+    EXPLOSIVE_IDLE,
     TOWER_SLOT,
-    ENEMY_IDLE,
+    WEAK_ENEMY_IDLE,
+    HEALER_ENEMY_IDLE,
+    STRONG_ENEMY_IDLE,
     BULLET,
     GRASS,
     PATH_EAST,
     PATH_NORTH,
+    PATH_C_LB,
     PATH_C_ULRB,
-    PATH_C_LL,
-    PATH_C_LR,
+    PATH_C_RB,
     PATH_C_UL,
     PATH_C_UR,
     BUTTON,
@@ -26,7 +30,7 @@ enum class TextureType : unsigned int
 class ResourceManager
 {
     private:
-        GPTexture textures[7];
+        GPTexture textures[(unsigned int)TextureType::ERROR];
         GPLib* gp;
 
     public:

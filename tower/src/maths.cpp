@@ -69,3 +69,14 @@ Vector2::operator GPVector2()
     return GPVector2{x, y};
 }
 #pragma endregion
+
+#pragma region boolean operator
+bool Vector2::operator==(const Vector2& vect) const
+{
+    return x == vect.x && y == vect.y;
+}
+bool Vector2::operator!=(const Vector2& vect) const
+{
+    return x != vect.x || y != vect.y;
+}
+#pragma endregion

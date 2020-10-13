@@ -23,6 +23,9 @@ class Vector2
         Vector2 operator*(float) const;
         Vector2 operator/(float scale) const;
 
+        bool operator==(const Vector2&) const;
+        bool operator!=(const Vector2&) const;
+
         operator GPVector2();
 
         static const Vector2 zero;

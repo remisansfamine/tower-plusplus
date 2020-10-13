@@ -7,10 +7,10 @@ ExplosiveTower::ExplosiveTower(Vector2 position, const ResourceManager& RM)
     m_damage = 10;
     m_cooldown = m_fire_rate = 2.5f;
     m_range = 250;
-    m_texture = RM.get_texture(TextureType::TOWER_IDLE);
+    m_texture = RM.get_texture(TextureType::EXPLOSIVE_IDLE);
 }
 
 void ExplosiveTower::update(float delta_time)
 {
-    m_cooldown -= delta_time;   
+    Tower::update(delta_time);
 }

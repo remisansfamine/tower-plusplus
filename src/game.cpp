@@ -192,6 +192,8 @@ void Game::display() const
                 continue;
 
         gpDrawTextureEx(gp, tower->get_texture(), {64, 64}, tower->get_position(), tower->m_angle, {1, 1}, nullptr, GPColor{1, 1, 1, 1});
+
+        gpDrawCircle(gp, tower->get_position(), tower->m_range, GPColor{1, 0, 0, 1});
     }
 
     for (Bullet* bullet : m_EntityManager.m_bullets)

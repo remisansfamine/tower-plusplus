@@ -22,7 +22,6 @@ enum class TextureType : unsigned int
     PATH_C_RB,
     PATH_C_UL,
     PATH_C_UR,
-    BUTTON,
     CASTLE,
 
     ERROR
@@ -31,12 +30,14 @@ enum class TextureType : unsigned int
 class ResourceManager
 {
     private:
-        GPTexture textures[(unsigned int)TextureType::ERROR];
-        GPLib* gp;
+        GPFont      m_font;
+        GPTexture   m_textures[(unsigned int)TextureType::ERROR];
+        GPLib*      m_gp;
 
     public:
         ResourceManager(GPLib* gp);
 
         ~ResourceManager();
         const GPTexture get_texture(TextureType type) const;
+        const GPFont    get_font() const;
 };

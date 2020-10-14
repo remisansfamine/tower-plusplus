@@ -17,7 +17,7 @@ EntityManager::EntityManager(const ResourceManager& RM)
 
     std::ifstream  stream("media/spawn_pattern.txt");
 
-    for (std::string line; getline(stream, line);)
+    for (std::string line; getline(stream, line); m_wave_count++)
         m_spawn_pattern += line + "\n";
 }
 
@@ -37,12 +37,13 @@ void    EntityManager::update(float delta_time)
 {
     m_spawn_cooldown -= delta_time;
 
-    if (m_spawn_cooldown < 0)
+    if (m_spawn_cooldown < 0 && m_wave_index < m_wave_count)
         spawn_enemies();
 }
 
 void    EntityManager::spawn_enemies()
 {
+    is_in_wave = true;
     m_spawn_cooldown = m_spawn_rate;
 
     switch (m_spawn_pattern[m_spawn_index++])
@@ -64,7 +65,13 @@ void    EntityManager::spawn_enemies()
             break;
 
         case '\n':
-            m_spawn_cooldown = (m_wave_timer * m_spawn_index);
+            if (m_enemies.size() == 0)
+            {
+                m_spawn_cooldown = (m_wave_timer * m_wave_index++);
+                is_in_wave = false;
+            }
+            else
+                m_spawn_index--;
             break;
 
         default:
@@ -75,16 +82,19 @@ void    EntityManager::spawn_enemies()
 void    EntityManager::createTower(Tower* tower)
 {
     m_towers.push_back(tower);
+    tower->m_EntityManager = this;
 }
 
 void    EntityManager::createEnemy(Enemy* enemy)
 {
     m_enemies.push_back(enemy);
+    enemy->m_EntityManager = this;
 }
 
 void    EntityManager::createBullet(Bullet* bullet)
 {
     m_bullets.push_back(bullet);
+    bullet->m_EntityManager = this;
 }
 
 void    EntityManager::destroyTower(Tower* tower)
@@ -113,4 +123,19 @@ void    EntityManager::destroyBullet(Bullet* bullet)
     *bullet = *m_bullets.back();
     delete m_bullets.back();
     m_bullets.pop_back();
+}
+
+const int     EntityManager::get_timer() const
+{
+    return m_spawn_cooldown < 0 || is_in_wave ? 0 : m_spawn_cooldown;
+}
+
+const int   EntityManager::get_wave_index() const
+{
+    return m_wave_index;
+}
+
+const int   EntityManager::get_wave_count() const
+{
+    return m_wave_count;
 }

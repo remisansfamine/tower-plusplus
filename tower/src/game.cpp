@@ -25,7 +25,7 @@
 int Game::m_money = 10;
 
 Game::Game(GPLib* gp)
-: gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)), m_EntityManager(EntityManager(m_ResourceManager))
+: m_gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)), m_EntityManager(EntityManager(m_ResourceManager))
 {
     m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 4, TILE_SIZE}, m_ResourceManager, TowerType::STANDARD));
     m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager, TowerType::SLOWING));
@@ -34,28 +34,19 @@ Game::Game(GPLib* gp)
 
 void Game::update()
 {
-    GPVector2 mouse_pos = gpMousePosition(gp);
+    Vector2 mouse_pos = gpMousePosition(m_gp);
 
-    if (gpKeyIsPressed(gp, GP_KEY_P))
-        m_isPaused = !m_isPaused;
-
-    if (gpKeyIsPressed(gp, GP_KEY_LEFT) && m_game_speed > 0)
-        m_game_speed -= 0.5f;
-
-    if (gpKeyIsPressed(gp, GP_KEY_RIGHT))
-        m_game_speed += 0.5f;
-
-    float delta_time = gpGetFrameTime(gp) * (m_isPaused ? 0 : m_game_speed);
+    float delta_time = get_delta_time();
 
     for (TowerSlot& slot : Tower::m_tower_slots)
     {  
-        if (!m_ButtonManager.m_current || slot.m_isOccuped)
+        if (!m_ButtonManager.m_current || slot.m_is_occuped)
             continue;
 
         if (c_point_box(mouse_pos, slot.get_collision()))
         {
             m_money -= m_ButtonManager.m_current->get_price();
-            slot.m_isOccuped = true;
+            slot.m_is_occuped = true;
             switch (m_ButtonManager.m_current->get_type())
             {
                 case TowerType::STANDARD:
@@ -70,6 +61,7 @@ void Game::update()
                     m_EntityManager.createTower(new ExplosiveTower(slot.get_position(), m_ResourceManager));
                     break;
             }
+            m_ButtonManager.m_current->is_undragged();
         }
     }
 
@@ -89,12 +81,6 @@ void Game::update()
             continue;
 
         enemy->update(delta_time);
-
-        if (enemy->m_life.m_life <= 0)
-        {
-            m_money += enemy->get_reward();
-            m_EntityManager.destroyEnemy(enemy);
-        }
     }
 
     for (Bullet* bullet : m_EntityManager.m_bullets)
@@ -103,22 +89,6 @@ void Game::update()
             continue;
 
         bullet->update(delta_time);
-
-        for (Enemy* enemy : m_EntityManager.m_enemies)
-        {
-            if (!enemy)
-                continue;
-
-            if (c_point_box(bullet->get_position(), Rectangle{enemy->get_position(), enemy->get_halfsize(), enemy->get_halfsize()}))
-            {
-                enemy->m_life.m_life -= bullet->get_damage();
-
-                m_EntityManager.destroyBullet(bullet);
-            }
-        }
-
-        if (bullet->m_target->m_life.m_life <= 0)
-            m_EntityManager.destroyBullet(bullet);
     }
     
     for (Tower* tower : m_EntityManager.m_towers)
@@ -126,52 +96,33 @@ void Game::update()
         if (!tower)
                 continue;
 
-        if (!tower->m_target)
-        {
-            for (Enemy* enemy : m_EntityManager.m_enemies)
-            {
-                if (!enemy)
-                    continue;
-
-                if (c_circle_point({tower->m_range, tower->get_position()}, enemy->get_position()))
-                {
-                    tower->m_target = enemy;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            if (c_circle_point({tower->m_range, tower->get_position()}, tower->m_target->get_position()) &&
-            tower->m_target->m_life.m_life > 0)
-            {
-                Vector2 vect = tower->m_target->get_position() - tower->get_position();
-
-                tower->m_angle = atan2(vect.y, vect.x) + M_PI / 2;
-
-                if (tower->m_cooldown <= 0)
-                {
-                    m_EntityManager.createBullet(new Bullet(tower->get_position(),
-                                                                tower->m_target, tower->get_damage(),
-                                                                m_ResourceManager));
-
-                    tower->m_cooldown = tower->m_fire_rate;
-                }
-            }
-            else
-                tower->m_target = nullptr;
-        }
-
         tower->update(delta_time);
 
-        if (gpMouseButtonIsPressed(gp, GP_MOUSE_BUTTON_2))
+        if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_2))
         {
             if (c_point_box(tower->get_position(), Rectangle{mouse_pos, 32, 32}))
-            {
-                m_EntityManager.destroyTower(tower);
-            }
+                tower->m_should_destroy = true;
         }
     }
+
+    for (Tower* tower : m_EntityManager.m_towers)
+    {
+        if (tower && tower->m_should_destroy)
+            m_EntityManager.destroyTower(tower);
+    }
+
+    for (Bullet* bullet : m_EntityManager.m_bullets)
+    {
+        if (bullet && bullet->m_should_destroy)
+            m_EntityManager.destroyBullet(bullet);
+    }
+
+    for (Enemy* enemy : m_EntityManager.m_enemies)
+    {
+        if (enemy && enemy->m_should_destroy)
+            m_EntityManager.destroyEnemy(enemy);
+    }
+
 }
 
 void Game::display() const
@@ -181,19 +132,18 @@ void Game::display() const
     {
         for (int j = 0; j < MAP_HEIGHT; j++)
         {
-            gpDrawTexture(gp, m_map.get_texture(i, j), GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GPColor{1, 1, 1, 1});
+            gpDrawTexture(m_gp, m_map.get_texture(i, j), GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GP_CWHITE);
         }
     }
 
     for (Tower* tower : m_EntityManager.m_towers)
     {
-
         if (!tower)
                 continue;
 
-        gpDrawTextureEx(gp, tower->get_texture(), {64, 64}, tower->get_position(), tower->m_angle, {1, 1}, nullptr, GPColor{1, 1, 1, 1});
+        gpDrawTextureEx(m_gp, tower->get_texture(), {64, 64}, tower->get_position(), tower->m_angle, {1, 1}, nullptr, GP_CWHITE);
 
-        gpDrawCircle(gp, tower->get_position(), tower->m_range, GPColor{1, 0, 0, 1});
+        gpDrawCircle(m_gp, tower->get_position(), tower->m_range, GPColor{1, 0, 0, 1});
     }
 
     for (Bullet* bullet : m_EntityManager.m_bullets)
@@ -201,7 +151,7 @@ void Game::display() const
         if (!bullet)
                 continue;
 
-        gpDrawTextureEx(gp, bullet->get_texture(), {64, 64}, bullet->get_position(), bullet->m_angle, {1, 1}, nullptr, GPColor{1, 1, 1, 1});
+        gpDrawTextureEx(m_gp, bullet->get_texture(), {64, 64}, bullet->get_position(), bullet->m_angle, {1, 1}, nullptr, GP_CWHITE);
     }
 
     for (Enemy* enemy : m_EntityManager.m_enemies)
@@ -209,19 +159,19 @@ void Game::display() const
         if (!enemy)
             continue;
 
-        gpDrawTexture(gp, enemy->get_texture(), enemy->get_position(), true, GPColor{1, 1, 1, 1});
+        gpDrawTexture(m_gp, enemy->get_texture(), enemy->get_position(), true, GP_CWHITE);
         
-        if (enemy->m_life.m_life >= enemy->m_life.get_max_life())
+        if (enemy->m_life.m_life >= enemy->m_life.get_max_life() || enemy->m_life.m_life <= 0)
             continue;
 
         GPRect lifebar = {enemy->get_position().x - enemy->get_halfsize(), enemy->get_position().y + enemy->get_halfsize() + enemy->get_lifebar_offert(), enemy->get_halfsize() * 2, enemy->get_halfsize() / 4};
-        gpDrawRectFilled(gp, lifebar, GPColor{1, 1, 1, 1});
+        gpDrawRectFilled(m_gp, lifebar, GP_CWHITE);
 
         lifebar.w *= enemy->m_life.m_life / enemy->m_life.get_max_life();
-        gpDrawRectFilled(gp, lifebar, GPColor{1, 0, 0, 1});
+        gpDrawRectFilled(m_gp, lifebar, GPColor{1, 0, 0, 1});
 
         lifebar.w /= enemy->m_life.m_life / enemy->m_life.get_max_life();
-        gpDrawRect(gp, lifebar, GPColor{0, 0, 0, 1});
+        gpDrawRect(m_gp, lifebar, GP_CBLACK);
     }
 
     for (Button* button : m_ButtonManager.m_buttons)
@@ -229,8 +179,34 @@ void Game::display() const
         if (!button)
                 continue;
 
-        gpDrawTexture(gp, button->m_texture, button->m_rect.position, true, button->m_color);
+        gpDrawRectFilled(m_gp, GPRect{button->get_initial_position().x - TILE_SIZE / 3 * 2, button->get_initial_position().y - TILE_SIZE / 3 * 2, TILE_SIZE * 3 / 2, TILE_SIZE * 3 / 2}, GPColor{0, 0, 0, 0.5f});
+
+        gpDrawTexture(m_gp, button->m_texture, button->m_rect.position, true, button->m_color);
     }
 
-    m_RendererManager.draw(gp);
+    std::string wave_string = "Wave " + std::to_string(m_EntityManager.get_wave_index()) +
+                              "/" + std::to_string(m_EntityManager.get_wave_count()) +
+                              " - Next wave in : " +
+                              std::to_string(m_EntityManager.get_timer()) + "s";
+
+    gpDrawText(m_gp, m_ResourceManager.get_font(), {SCREEN_WIDTH / 2 - 210, 50}, GP_CBLACK, wave_string.c_str());
+
+    std::string money_string = "Money " + std::to_string(m_money) + "$";
+    gpDrawText(m_gp, m_ResourceManager.get_font(), {SCREEN_WIDTH / 2 - 50, 100}, GP_CBLACK, money_string.c_str());
+
+    m_RendererManager.draw(m_gp);
+}
+
+float Game::get_delta_time()
+{
+    if (gpKeyIsPressed(m_gp, GP_KEY_P))
+        m_isPaused = !m_isPaused;
+
+    if (gpKeyIsPressed(m_gp, GP_KEY_LEFT) && m_game_speed > 0)
+        m_game_speed -= 0.5f;
+
+    if (gpKeyIsPressed(m_gp, GP_KEY_RIGHT))
+        m_game_speed += 0.5f;
+
+    return gpGetFrameTime(m_gp) * (m_isPaused ? 0 : m_game_speed);
 }

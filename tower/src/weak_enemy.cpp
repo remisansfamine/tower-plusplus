@@ -12,5 +12,5 @@ WeakEnemy::WeakEnemy(Vector2 position, const ResourceManager& RM) : Enemy(positi
 
 void WeakEnemy::update(float delta_time)
 {
-    move(delta_time);
+    Enemy::update(delta_time);
 }

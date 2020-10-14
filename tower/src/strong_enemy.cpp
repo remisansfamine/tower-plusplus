@@ -11,5 +11,5 @@ StrongEnemy::StrongEnemy(Vector2 position, const ResourceManager& RM) : Enemy(po
 
 void StrongEnemy::update(float delta_time)
 {
-    move(delta_time);
+    Enemy::update(delta_time);
 }

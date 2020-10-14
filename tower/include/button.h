@@ -14,6 +14,8 @@ class Button
         bool        m_is_dragged = false;
         bool        m_is_draggable = false;
         Vector2     m_last_mousepos;
+        Vector2     m_initial_position;
+
     public:
         ButtonManager*   m_ButtonManager;
         GPTexture   m_texture;
@@ -31,4 +33,6 @@ class Button
         virtual void is_hightlighted();
         virtual void is_dragged(Vector2 mouse_pos);
         virtual void is_undragged();
+
+        Vector2 get_initial_position() const;
 };

@@ -26,10 +26,11 @@ Vector2::Vector2(GPVector2 vect, bool isUnitary) : x(vect.x), y(vect.y)
 }
 #pragma endregion
 
-#pragma region vector arithmetic
+#pragma region vector functions
 float Vector2::get_square_magnitude() const { return pow(x, 2) + pow(y, 2); }
 float Vector2::get_magnitude() const { return sqrt(get_square_magnitude()); }
 float Vector2::get_distance(const Vector2& other) const { return (*this - other).get_magnitude(); }
+float Vector2::get_square_distance(const Vector2& other) const { return (*this - other).get_square_magnitude(); }
 Vector2& Vector2::normalize()
 {
     float magnitude = get_magnitude();
@@ -42,7 +43,7 @@ Vector2& Vector2::normalize()
 }
 #pragma endregion
 
-#pragma region arithmetic operators
+#pragma region vector operators
 Vector2 Vector2::operator+(const Vector2& other) const
 {
     return {x + other.x, y + other.y};
@@ -78,5 +79,12 @@ bool Vector2::operator==(const Vector2& vect) const
 bool Vector2::operator!=(const Vector2& vect) const
 {
     return x != vect.x || y != vect.y;
+}
+#pragma endregion
+
+#pragma region maths functions
+float clamp(float value, float min, float max)
+{
+    return value < min ? min : value > max ? max : value;
 }
 #pragma endregion

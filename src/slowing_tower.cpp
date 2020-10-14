@@ -22,6 +22,6 @@ void SlowingTower::update(float delta_time)
 void SlowingTower::create_bullet()
 {
     m_EntityManager->createBullet(new SlowingBullet(get_position(),
-                                                 m_target, get_damage(),
+                                                 m_target,
                                                  m_EntityManager->m_ResourceManager));
 }

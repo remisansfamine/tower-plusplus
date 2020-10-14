@@ -75,22 +75,7 @@ void Game::update()
     
     m_EntityManager.update(delta_time);
 
-    for (Enemy* enemy : m_EntityManager.m_enemies)
-    {
-        if (!enemy)
-            continue;
-
-        enemy->update(delta_time);
-    }
-
-    for (Bullet* bullet : m_EntityManager.m_bullets)
-    {
-        if (!bullet)
-            continue;
-
-        bullet->update(delta_time);
-    }
-    
+    // To put in the entity manager
     for (Tower* tower : m_EntityManager.m_towers)
     {
         if (!tower)
@@ -105,29 +90,11 @@ void Game::update()
         }
     }
 
-    for (Tower* tower : m_EntityManager.m_towers)
-    {
-        if (tower && tower->m_should_destroy)
-            m_EntityManager.destroyTower(tower);
-    }
-
-    for (Bullet* bullet : m_EntityManager.m_bullets)
-    {
-        if (bullet && bullet->m_should_destroy)
-            m_EntityManager.destroyBullet(bullet);
-    }
-
-    for (Enemy* enemy : m_EntityManager.m_enemies)
-    {
-        if (enemy && enemy->m_should_destroy)
-            m_EntityManager.destroyEnemy(enemy);
-    }
-
+    m_EntityManager.clear();
 }
 
 void Game::display() const
 {   
-
     for (int i = 0; i < MAP_WIDTH; i++)
     {
         for (int j = 0; j < MAP_HEIGHT; j++)
@@ -136,48 +103,12 @@ void Game::display() const
         }
     }
 
-    for (Tower* tower : m_EntityManager.m_towers)
-    {
-        if (!tower)
-                continue;
-
-        gpDrawTextureEx(m_gp, tower->get_texture(), {64, 64}, tower->get_position(), tower->m_angle, {1, 1}, nullptr, GP_CWHITE);
-
-        gpDrawCircle(m_gp, tower->get_position(), tower->m_range, GPColor{1, 0, 0, 1});
-    }
-
-    for (Bullet* bullet : m_EntityManager.m_bullets)
-    {
-        if (!bullet)
-                continue;
-
-        gpDrawTextureEx(m_gp, bullet->get_texture(), {64, 64}, bullet->get_position(), bullet->m_angle, {1, 1}, nullptr, GP_CWHITE);
-    }
-
-    for (Enemy* enemy : m_EntityManager.m_enemies)
-    {
-        if (!enemy)
-            continue;
-
-        gpDrawTexture(m_gp, enemy->get_texture(), enemy->get_position(), true, GP_CWHITE);
-        
-        if (enemy->m_life.m_life >= enemy->m_life.get_max_life() || enemy->m_life.m_life <= 0)
-            continue;
-
-        GPRect lifebar = {enemy->get_position().x - enemy->get_halfsize(), enemy->get_position().y + enemy->get_halfsize() + enemy->get_lifebar_offert(), enemy->get_halfsize() * 2, enemy->get_halfsize() / 4};
-        gpDrawRectFilled(m_gp, lifebar, GP_CWHITE);
-
-        lifebar.w *= enemy->m_life.m_life / enemy->m_life.get_max_life();
-        gpDrawRectFilled(m_gp, lifebar, GPColor{1, 0, 0, 1});
-
-        lifebar.w /= enemy->m_life.m_life / enemy->m_life.get_max_life();
-        gpDrawRect(m_gp, lifebar, GP_CBLACK);
-    }
+    m_EntityManager.draw(m_gp);
 
     for (Button* button : m_ButtonManager.m_buttons)
     {
         if (!button)
-                continue;
+            continue;
 
         gpDrawRectFilled(m_gp, GPRect{button->get_initial_position().x - TILE_SIZE / 3 * 2, button->get_initial_position().y - TILE_SIZE / 3 * 2, TILE_SIZE * 3 / 2, TILE_SIZE * 3 / 2}, GPColor{0, 0, 0, 0.5f});
 
@@ -193,8 +124,6 @@ void Game::display() const
 
     std::string money_string = "Money " + std::to_string(m_money) + "$";
     gpDrawText(m_gp, m_ResourceManager.get_font(), {SCREEN_WIDTH / 2 - 50, 100}, GP_CBLACK, money_string.c_str());
-
-    m_RendererManager.draw(m_gp);
 }
 
 float Game::get_delta_time()

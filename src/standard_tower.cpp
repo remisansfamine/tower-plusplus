@@ -1,7 +1,7 @@
 #include "standard_tower.h"
 
 #include "entity_manager.h"
-#include "bullet.h"
+#include "standard_bullet.h"
 
 StandardTower::StandardTower(Vector2 position, const ResourceManager& RM)
 : Tower(position)
@@ -20,7 +20,7 @@ void StandardTower::update(float delta_time)
 
 void StandardTower::create_bullet()
 {
-    m_EntityManager->createBullet(new Bullet(get_position(),
-                                                 m_target, get_damage(),
+    m_EntityManager->createBullet(new StandardBullet(get_position(),
+                                                 m_target,
                                                  m_EntityManager->m_ResourceManager));
 }

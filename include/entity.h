@@ -7,7 +7,6 @@
 #include "maths.h"
 #include "life.h"
 
-class Renderer;
 class EntityManager;
 
 class Entity
@@ -20,7 +19,6 @@ class Entity
         Vector2     m_position;
         Vector2     m_direction;
         GPTexture   m_texture;
-        Renderer*   m_renderer = nullptr;
     public:
         EntityManager* m_EntityManager;
 
@@ -30,12 +28,11 @@ class Entity
 
         Entity(Vector2 position);
 
-        GPTexture get_texture() const;
-
-        float get_damage() const;
         float X() const;
         float Y() const;
         Vector2 get_position() const;
 
         virtual void update(float delta_time) = 0;
+
+        virtual void draw(GPLib* gp) = 0;
 };

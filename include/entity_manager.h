@@ -45,4 +45,8 @@ class EntityManager
         const int   get_timer() const;
         const int   get_wave_index() const;
         const int   get_wave_count() const;
+
+        void    draw(GPLib* gp) const;
+
+        void    clear();
 };

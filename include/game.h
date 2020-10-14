@@ -2,7 +2,6 @@
 
 #include "map.h"
 #include "resource_manager.h"
-#include "render_manager.h"
 #include "entity_manager.h"
 #include "button_manager.h"
 
@@ -17,7 +16,6 @@ class Game
 
         GPLib* m_gp;
         const ResourceManager   m_ResourceManager;
-        RendererManager         m_RendererManager;
         EntityManager           m_EntityManager;
         ButtonManager           m_ButtonManager;
         Map                     m_map;

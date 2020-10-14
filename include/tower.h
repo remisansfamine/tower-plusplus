@@ -18,14 +18,14 @@ class Enemy;
 
 class Tower : public Entity
 {
-    public:
-        static std::vector<TowerSlot> m_tower_slots;
-
+    protected:
         Enemy*  m_target = nullptr;
         float   m_fire_rate;
         float   m_cooldown;
         float   m_range;
         float   m_angle;
+    public:
+        static std::vector<TowerSlot> m_tower_slots;
 
         Tower(Vector2 position);
 
@@ -35,5 +35,7 @@ class Tower : public Entity
 
         void shoot();
 
-        virtual void create_bullet();
+        virtual void create_bullet() = 0;
+
+        void draw(GPLib* gp) override;
 };

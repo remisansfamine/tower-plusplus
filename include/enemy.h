@@ -15,7 +15,9 @@ class Enemy : public Entity
         int     m_libebar_offset = 5;
         float   m_stun_cooldown = 0;
         Rectangle   m_rect = {{0, 0}, 32, 32};
-        
+
+        void    move(float delta_time);
+
     public:
         static std::array<Vector2, 26>  m_waypoints;
         static int                      m_waypoints_count;
@@ -24,15 +26,13 @@ class Enemy : public Entity
 
         virtual void    update(float delta_time);
 
-        void    move(float delta_time);
-
         int     get_reward() const;
 
         Rectangle   get_rect() const;
 
         float   get_halfsize() const;
 
-        int     get_lifebar_offert() const;
-
         void    stun(float);
+
+        virtual void draw(GPLib* gp) override;
 };

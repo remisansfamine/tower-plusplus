@@ -30,4 +30,10 @@ class Tower : public Entity
         Tower(Vector2 position);
 
         virtual void update(float delta_time);
+
+        void get_target();
+
+        void shoot();
+
+        virtual void create_bullet();
 };

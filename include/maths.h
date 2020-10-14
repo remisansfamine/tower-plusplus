@@ -4,6 +4,8 @@
 
 #define M_PI 3.14159265359
 
+float clamp(float value, float min, float max);
+
 class Vector2
 {
     public:
@@ -17,6 +19,8 @@ class Vector2
         float get_square_magnitude() const;
         float get_magnitude() const;
         float get_distance(const Vector2& other) const;
+        float get_square_distance(const Vector2& other) const;
+
         Vector2& normalize();
 
         Vector2 operator+(const Vector2&) const;

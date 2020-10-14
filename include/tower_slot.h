@@ -9,7 +9,7 @@ class TowerSlot
         Rectangle   m_collision;
 
     public:
-        bool        m_isOccuped = false;
+        bool        m_is_occuped = false;
         
         TowerSlot(Vector2 position);
 

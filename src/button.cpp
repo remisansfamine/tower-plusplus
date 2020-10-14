@@ -75,3 +75,8 @@ void Button::is_undragged()
 {
     m_is_dragged = false;
 }
+
+Vector2 Button::get_initial_position() const
+{
+    return m_initial_position;
+}

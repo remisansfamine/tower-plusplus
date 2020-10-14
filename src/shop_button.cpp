@@ -30,19 +30,8 @@ ShopButton::ShopButton(GPLib* gp, Vector2 position, const ResourceManager& RM, T
 
 void ShopButton::update()
 {
-    if (Game::m_money >= m_price)
-    {
-        m_is_draggable = true;
-        m_color.a = 1;
-    }
-    else
-    {
-        if (m_is_draggable)
-            is_undragged();
-        
-        m_is_draggable = false;
-        m_color.a = 0.5f;
-    }
+    m_is_draggable = Game::m_money >= m_price;
+    m_color.a = m_is_draggable ? 1 : 0.5f;
     Button::update();
 }
 

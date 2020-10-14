@@ -1,5 +1,9 @@
 #include "slowing_tower.h"
 
+#include "slowing_bullet.h"
+#include "entity_manager.h"
+
+
 SlowingTower::SlowingTower(Vector2 position, const ResourceManager& RM)
 : Tower(position)
 {
@@ -13,4 +17,11 @@ SlowingTower::SlowingTower(Vector2 position, const ResourceManager& RM)
 void SlowingTower::update(float delta_time)
 {
     Tower::update(delta_time);
+}
+
+void SlowingTower::create_bullet()
+{
+    m_EntityManager->createBullet(new SlowingBullet(get_position(),
+                                                 m_target, get_damage(),
+                                                 m_EntityManager->m_ResourceManager));
 }

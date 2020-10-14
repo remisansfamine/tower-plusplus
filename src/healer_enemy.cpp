@@ -11,5 +11,5 @@ HealerEnemy::HealerEnemy(Vector2 position, const ResourceManager& RM) : Enemy(po
 
 void HealerEnemy::update(float delta_time)
 {
-    move(delta_time);
+    Enemy::update(delta_time);
 }

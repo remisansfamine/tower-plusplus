@@ -17,5 +17,9 @@ class Bullet : public Entity
 
         void update(float delta_time) override;
 
+        virtual bool collision_check(const Enemy&) const;
+
         void move(float delta_time);
+
+        virtual void hit(Enemy&);
 };

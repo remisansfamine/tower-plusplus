@@ -15,7 +15,7 @@ class Game
         bool    m_isPaused = false;
         float   m_game_speed = 1;
 
-        GPLib* gp;
+        GPLib* m_gp;
         const ResourceManager   m_ResourceManager;
         RendererManager         m_RendererManager;
         EntityManager           m_EntityManager;
@@ -32,4 +32,6 @@ class Game
         void    update();
 
         void    display() const;
+
+        float   get_delta_time();
 };

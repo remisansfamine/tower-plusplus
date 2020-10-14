@@ -8,6 +8,7 @@
 #include "life.h"
 
 class Renderer;
+class EntityManager;
 
 class Entity
 {
@@ -15,12 +16,16 @@ class Entity
         std::string name;
 
         float   m_damage;
-
+        
         Vector2     m_position;
         Vector2     m_direction;
         GPTexture   m_texture;
         Renderer*   m_renderer = nullptr;
     public:
+        EntityManager* m_EntityManager;
+
+        bool    m_should_destroy = false;
+
         Life    m_life;
 
         Entity(Vector2 position);

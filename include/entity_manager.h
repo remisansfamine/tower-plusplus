@@ -11,13 +11,17 @@ class EntityManager
 {
     private:
         std::string m_spawn_pattern;
-        const ResourceManager m_ResourceManager;
+        bool    is_in_wave = false;
         float   m_spawn_cooldown;
         float   m_spawn_rate = 1;
         float   m_wave_timer = 10;
         unsigned int    m_spawn_index = 0;
+        unsigned int    m_wave_index = 1;
+        unsigned int    m_wave_count = 0;
 
     public:
+        const ResourceManager m_ResourceManager;
+
         EntityManager(const ResourceManager&);
 
         ~EntityManager();
@@ -37,4 +41,8 @@ class EntityManager
         void    destroyTower(Tower*);
         void    destroyEnemy(Enemy*);
         void    destroyBullet(Bullet*);
+
+        const int   get_timer() const;
+        const int   get_wave_index() const;
+        const int   get_wave_count() const;
 };

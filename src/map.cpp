@@ -3,6 +3,8 @@
 #include "map.h"
 #include "enemy.h"
 
+#include <cassert>
+
 void    Map::generateTilemap(const ResourceManager& RM)
 {
     std::ifstream infile("media/tilemap.txt");
@@ -103,9 +105,8 @@ void    Map::generateWaypoints(const ResourceManager& RM)
         hor_index++;
     }
 
-    if (last < 'B')
-        return;
-    
+    assert(last >= 'B');
+
     Enemy::m_waypoints_count = last - 'A' + 1;
     m_tiles[last_hor_index][last_vert_index] = RM.get_texture(TextureType::CASTLE);
 }

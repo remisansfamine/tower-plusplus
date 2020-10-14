@@ -10,5 +10,4 @@ class SlowingTower : public Tower
         void update(float delta_time) override;
 
         void create_bullet() override;
-
 };

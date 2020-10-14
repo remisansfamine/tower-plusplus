@@ -3,6 +3,8 @@
 #include "resource_manager.h"
 #include "entity_manager.h"
 #include "enemy.h"
+#include "standard_bullet.h"
+
 #include "bullet.h"
 
 #include "collisions.h"
@@ -60,9 +62,9 @@ void Tower::shoot()
     }
 }
 
-void Tower::create_bullet()
+void Tower::draw(GPLib* gp)
 {
-    m_EntityManager->createBullet(new Bullet(get_position(),
-                                                 m_target, get_damage(),
-                                                 m_EntityManager->m_ResourceManager));
+    gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
+
+    gpDrawCircle(gp, m_position, m_range, GPColor{1, 0, 0, 1});
 }

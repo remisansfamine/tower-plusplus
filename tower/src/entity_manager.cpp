@@ -39,6 +39,70 @@ void    EntityManager::update(float delta_time)
 
     if (m_spawn_cooldown < 0 && m_wave_index < m_wave_count)
         spawn_enemies();
+
+    for (Enemy* enemy : m_enemies)
+    {
+        if (!enemy)
+            continue;
+
+        enemy->update(delta_time);
+    }
+
+    for (Bullet* bullet : m_bullets)
+    {
+        if (!bullet)
+            continue;
+
+        bullet->update(delta_time);
+    }
+}
+
+void    EntityManager::draw(GPLib* gp) const
+{
+    for (Tower* tower : m_towers)
+    {
+        if (!tower)
+            continue;
+
+        tower->draw(gp);
+    }
+
+    for (Bullet* bullet : m_bullets)
+    {
+        if (!bullet)
+            continue;
+
+        bullet->draw(gp);
+    }
+
+    for (Enemy* enemy : m_enemies)
+    {
+        if (!enemy)
+            continue;
+
+        enemy->draw(gp);
+    }
+}
+
+void EntityManager::clear()
+{
+    for (Tower* tower : m_towers)
+    {
+        if (tower && tower->m_should_destroy)
+            destroyTower(tower);
+    }
+
+    for (Bullet* bullet : m_bullets)
+    {
+        if (bullet && bullet->m_should_destroy)
+            destroyBullet(bullet);
+    }
+
+    for (Enemy* enemy : m_enemies)
+    {
+        if (enemy && enemy->m_should_destroy)
+            destroyEnemy(enemy);
+    }
 }
 
 void    EntityManager::spawn_enemies()

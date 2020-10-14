@@ -14,7 +14,9 @@ ResourceManager::ResourceManager(GPLib* gp) : m_gp(gp)
     m_textures[(unsigned int)TextureType::HEALER_ENEMY_IDLE] = gpTextureLoadFromFile(gp, "media/healer_enemy.png");
     m_textures[(unsigned int)TextureType::STRONG_ENEMY_IDLE] = gpTextureLoadFromFile(gp, "media/strong_enemy.png");
 
-    m_textures[(unsigned int)TextureType::BULLET] = gpTextureLoadFromFile(gp, "media/bullet.png");
+    m_textures[(unsigned int)TextureType::STANDARD_BULLET] = gpTextureLoadFromFile(gp, "media/standard_bullet.png");
+    m_textures[(unsigned int)TextureType::SLOWING_BULLET] = gpTextureLoadFromFile(gp, "media/slowing_bullet.png");
+    m_textures[(unsigned int)TextureType::EXPLOSIVE_BULLET] = gpTextureLoadFromFile(gp, "media/explosive_bullet.png");
 
     m_textures[(unsigned int)TextureType::GRASS] = gpTextureLoadFromFile(gp, "media/grass1.png");
 

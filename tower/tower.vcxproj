@@ -47,7 +47,6 @@
     <ClCompile Include="src/life.cpp"/>
 
     <ClCompile Include="src/resource_manager.cpp"/>
-    <ClCompile Include="src/render_manager.cpp"/>
     <ClCompile Include="src/entity_manager.cpp"/>
     <ClCompile Include="src/button_manager.cpp"/>
 
@@ -62,6 +61,7 @@
         <ClCompile Include="src/slowing_tower.cpp"/>
 
       <ClCompile Include="src/bullet.cpp"/>
+        <ClCompile Include="src/standard_bullet.cpp"/>
         <ClCompile Include="src/slowing_bullet.cpp"/>
         <ClCompile Include="src/explosive_bullet.cpp"/>
 

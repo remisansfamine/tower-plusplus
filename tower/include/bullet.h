@@ -5,21 +5,19 @@
 
 class Bullet : public Entity
 {
-    private:
+    protected:
         float   m_speed;
-        
-    public:
         float   m_angle;
-
         Enemy*  m_target = nullptr;
-
-        Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM);
-
-        void update(float delta_time) override;
-
-        virtual bool collision_check(const Enemy&) const;
 
         void move(float delta_time);
 
         virtual void hit(Enemy&);
+
+    public:
+        Bullet(Vector2 position, Enemy* enemy);
+
+        void update(float delta_time) override;
+
+        void draw(GPLib* gp) override;
 };

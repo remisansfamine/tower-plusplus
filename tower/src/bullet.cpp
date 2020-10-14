@@ -4,12 +4,10 @@
 
 #include "collisions.h"
 
-Bullet::Bullet(Vector2 position, Enemy* enemy, float damage, const ResourceManager& RM)
+Bullet::Bullet(Vector2 position, Enemy* enemy)
 : Entity(position), m_target(enemy)
 {
-    m_texture = RM.get_texture(TextureType::BULLET);
     m_speed = 600;
-    m_damage = damage;
 }
 
 void Bullet::update(float delta_time) 
@@ -25,7 +23,7 @@ void Bullet::update(float delta_time)
         if (!enemy)
             continue;
 
-        if (collision_check(*enemy))
+        if (c_point_box(get_position(), Rectangle{enemy->get_position(), enemy->get_halfsize(), enemy->get_halfsize()}))
             hit(*enemy);
     }
 
@@ -41,11 +39,11 @@ void Bullet::move(float delta_time)
 
 void Bullet::hit(Enemy& enemy)
 {
-    enemy.m_life.m_life -= get_damage();
+    enemy.m_life.m_life -= m_damage;
     m_should_destroy = true;
 }
 
-bool Bullet::collision_check(const Enemy& enemy) const
+void Bullet::draw(GPLib* gp)
 {
-    return c_point_box(get_position(), Rectangle{enemy.get_position(), enemy.get_halfsize(), enemy.get_halfsize()});
+    gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
 }

@@ -20,6 +20,6 @@ void ExplosiveTower::update(float delta_time)
 void ExplosiveTower::create_bullet()
 {
     m_EntityManager->createBullet(new ExplosiveBullet(get_position(),
-                                                 m_target, get_damage(),
+                                                 m_target,
                                                  m_EntityManager->m_ResourceManager));
 }

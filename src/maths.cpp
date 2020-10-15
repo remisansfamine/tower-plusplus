@@ -65,7 +65,7 @@ Vector2& Vector2::operator+=(const Vector2& vect)
     *this = Vector2(x + vect.x, y + vect.y);
     return *this;
 }
-Vector2::operator GPVector2()
+Vector2::operator GPVector2() const
 {
     return GPVector2{x, y};
 }

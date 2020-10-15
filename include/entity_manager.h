@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "castle.h"
 
 class ResourceManager;
 class Enemy;
@@ -29,6 +30,8 @@ class EntityManager
         std::vector<Enemy*>     m_enemies;
         std::vector<Tower*>     m_towers;
         std::vector<Bullet*>    m_bullets;
+
+        Castle                  m_castle;
 
         void    update(float delta_time);
 

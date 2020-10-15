@@ -2,6 +2,8 @@
 
 #include "button.h"
 
+#include "map.h"
+
 ButtonManager::ButtonManager()
 {
     for (Button* button : m_buttons)
@@ -22,4 +24,13 @@ void    ButtonManager::destroyButton(Button* button)
     *button = *m_buttons.back();
     delete m_buttons.back();
     m_buttons.pop_back();
+}
+
+void    ButtonManager::draw(GPLib* gp) const
+{
+    for (Button* button : m_buttons)
+    {
+        if (button)
+            button->draw(gp);
+    }
 }

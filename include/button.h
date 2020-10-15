@@ -34,5 +34,5 @@ class Button
         virtual void is_dragged(Vector2 mouse_pos);
         virtual void is_undragged();
 
-        Vector2 get_initial_position() const;
+        virtual void    draw(GPLib* gp) const;
 };

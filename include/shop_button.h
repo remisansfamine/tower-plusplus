@@ -19,4 +19,6 @@ class ShopButton : public Button
         int get_price() const;
 
         TowerType get_type() const;
+
+        void draw(GPLib* gp) const override;
 };

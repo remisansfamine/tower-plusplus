@@ -14,11 +14,6 @@ SlowingTower::SlowingTower(Vector2 position, const ResourceManager& RM)
     m_texture = RM.get_texture(TextureType::SLOWING_IDLE);
 }
 
-void SlowingTower::update(float delta_time)
-{
-    Tower::update(delta_time);
-}
-
 void SlowingTower::create_bullet()
 {
     m_EntityManager->createBullet(new SlowingBullet(get_position(),

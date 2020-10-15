@@ -57,3 +57,9 @@ TowerType ShopButton::get_type() const
 {
     return m_type;
 }
+
+void ShopButton::draw(GPLib* gp) const
+{
+    Button::draw(gp);
+    gpDrawTexture(gp, m_texture, m_rect.position, true, m_color);
+}

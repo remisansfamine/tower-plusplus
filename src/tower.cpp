@@ -26,9 +26,9 @@ void Tower::update(float delta_time)
         if (c_circle_box({m_range, get_position()}, m_target->get_rect()) &&
         !m_target->m_should_destroy)
         {
-            Vector2 vect = m_target->get_position() - get_position();
+            Vector2 vect = m_target->get_position() - m_position;
 
-            m_angle = atan2(vect.y, vect.x) + M_PI / 2;
+            m_angle = atan2(vect.y, vect.x);
 
             shoot();
         }

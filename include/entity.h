@@ -12,8 +12,7 @@ class EntityManager;
 class Entity
 {
     protected:
-        std::string name;
-
+        float   m_angle;
         float   m_damage;
         
         Vector2     m_position;

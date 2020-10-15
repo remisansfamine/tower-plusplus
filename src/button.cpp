@@ -65,18 +65,16 @@ void Button::is_hightlighted()
 {
 
 }
-
 void Button::is_dragged(Vector2 mouse_pos)
 {
     m_rect.position = mouse_pos;
 }
-
 void Button::is_undragged()
 {
     m_is_dragged = false;
 }
 
-Vector2 Button::get_initial_position() const
+void    Button::draw(GPLib* gp) const
 {
-    return m_initial_position;
+    gpDrawRectFilled(gp, GPRect{m_initial_position.x - TILE_SIZE / 3 * 2, m_initial_position.y - TILE_SIZE / 3 * 2, TILE_SIZE * 3 / 2, TILE_SIZE * 3 / 2}, GPColor{0, 0, 0, 0.5f});
 }

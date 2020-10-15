@@ -53,7 +53,6 @@
     <ClCompile Include="src/map.cpp"/>
 
     <ClCompile Include="src/entity.cpp"/>
-
       <ClCompile Include="src/tower_slot.cpp"/>
       <ClCompile Include="src/tower.cpp"/>
         <ClCompile Include="src/standard_tower.cpp"/>

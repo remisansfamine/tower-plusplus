@@ -23,7 +23,6 @@ class Tower : public Entity
         float   m_fire_rate;
         float   m_cooldown;
         float   m_range;
-        float   m_angle;
     public:
         static std::vector<TowerSlot> m_tower_slots;
 

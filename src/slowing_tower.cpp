@@ -4,10 +4,10 @@
 #include "entity_manager.h"
 
 
-SlowingTower::SlowingTower(Vector2 position, const ResourceManager& RM)
-: Tower(position)
+SlowingTower::SlowingTower(TowerSlot* slot, const ResourceManager& RM)
+: Tower(slot)
 {
-    m_life = Life(40);
+    m_life = m_max_life = 70;
     m_damage = 2.5f;
     m_cooldown = m_fire_rate = 0.25f;
     m_range = 175;

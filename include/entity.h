@@ -5,7 +5,6 @@
 #include <gp/gp.h>
 
 #include "maths.h"
-#include "life.h"
 
 class EntityManager;
 
@@ -18,12 +17,16 @@ class Entity
         Vector2     m_position;
         Vector2     m_direction;
         GPTexture   m_texture;
+
+        void Entity::get_angle(Vector2 target);
+
     public:
         EntityManager* m_EntityManager;
 
         bool    m_should_destroy = false;
 
-        Life    m_life;
+        float   m_life;
+        float   m_max_life;
 
         Entity(Vector2 position);
 

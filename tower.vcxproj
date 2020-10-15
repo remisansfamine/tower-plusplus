@@ -44,7 +44,6 @@
     <ClCompile Include="src/game.cpp"/>
     <ClCompile Include="src/maths.cpp"/>
     <ClCompile Include="src/collisions.cpp"/>
-    <ClCompile Include="src/life.cpp"/>
 
     <ClCompile Include="src/resource_manager.cpp"/>
     <ClCompile Include="src/entity_manager.cpp"/>
@@ -68,6 +67,8 @@
         <ClCompile Include="src/weak_enemy.cpp"/>
         <ClCompile Include="src/strong_enemy.cpp"/>
         <ClCompile Include="src/healer_enemy.cpp"/>
+
+        <ClCompile Include="src/hud.cpp"/>
 
     <ClCompile Include="src/button.cpp"/>
       <ClCompile Include="src/shop_button.cpp"/>

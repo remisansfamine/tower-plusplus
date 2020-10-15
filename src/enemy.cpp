@@ -44,10 +44,9 @@ void    Enemy::update(float delta_time)
 {
     move(delta_time);
 
-    Vector2 vect = m_waypoints[m_current_waypoint] - m_position;
-    m_angle = atan2(vect.y, vect.x);
+    get_angle(m_waypoints[m_current_waypoint]);
 
-    if (m_life.m_life <= 0)
+    if (m_life <= 0)
     {
         Game::m_money += get_reward();
         m_should_destroy = true;
@@ -63,16 +62,16 @@ void    Enemy::draw(GPLib* gp)
 {
     gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
         
-    if (m_life.m_life >= m_life.get_max_life() || m_life.m_life <= 0)
+    if (m_life >= m_max_life || m_life <= 0)
         return;
 
     GPRect lifebar = {m_position.x - TILE_SIZE / 2, m_position.y + TILE_SIZE / 2 + m_libebar_offset, TILE_SIZE, TILE_SIZE / 8};
     gpDrawRectFilled(gp, lifebar, GP_CWHITE);
 
-    lifebar.w *= m_life.m_life / m_life.get_max_life();
+    lifebar.w *= m_life / m_max_life;
     gpDrawRectFilled(gp, lifebar, GPColor{1, 0, 0, 1});
 
-    lifebar.w /= m_life.m_life / m_life.get_max_life();
+    lifebar.w /= m_life / m_max_life;
     gpDrawRect(gp, lifebar, GP_CBLACK);
 }
 

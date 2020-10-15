@@ -1,11 +1,12 @@
 #pragma once
 
+#include "resource_manager.h"
 #include "tower.h"
 
 class ExplosiveTower : public Tower
 {
     public:
-        ExplosiveTower(Vector2 position, const ResourceManager& RM);
+        ExplosiveTower(TowerSlot* slot, const ResourceManager& RM);
         
         void create_bullet() override;
 };

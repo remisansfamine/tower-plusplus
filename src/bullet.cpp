@@ -5,18 +5,13 @@
 #include "collisions.h"
 
 Bullet::Bullet(Vector2 position, Enemy* enemy)
-: Entity(position), m_target(enemy)
-{
-    m_speed = 600;
-}
+: Entity(position), m_target(enemy) { }
 
 void Bullet::update(float delta_time) 
 {
     move(delta_time);
 
-    Vector2 vect = m_target->get_position() - get_position();
-
-    m_angle = atan2(vect.y, vect.x);
+    get_angle(m_target->get_position());
 
     for (Enemy* enemy : m_EntityManager->m_enemies)
     {
@@ -39,7 +34,7 @@ void Bullet::move(float delta_time)
 
 void Bullet::hit(Enemy& enemy)
 {
-    enemy.m_life.m_life -= m_damage;
+    enemy.m_life -= m_damage;
     m_should_destroy = true;
 }
 

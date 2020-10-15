@@ -4,7 +4,7 @@
 
 #include "map.h"
 
-ButtonManager::ButtonManager()
+ButtonManager::~ButtonManager()
 {
     for (Button* button : m_buttons)
         destroyButton(button);
@@ -32,5 +32,14 @@ void    ButtonManager::draw(GPLib* gp) const
     {
         if (button)
             button->draw(gp);
+    }
+}
+
+void    ButtonManager::update()
+{
+    for (Button* button : m_buttons)
+    {
+        if (button)
+            button->update();
     }
 }

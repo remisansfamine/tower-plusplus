@@ -2,7 +2,7 @@
 
 ResourceManager::ResourceManager(GPLib* gp) : m_gp(gp)
 {
-    m_font = gpFontLoad(m_gp, "media/unique.ttf", 40);
+    m_font = gpFontLoad(m_gp, "media/unique.ttf", 30);
 
     m_textures[(unsigned int)TextureType::STANDARD_IDLE] = gpTextureLoadFromFile(gp, "media/standard_tower.png");
     m_textures[(unsigned int)TextureType::SLOWING_IDLE] = gpTextureLoadFromFile(gp, "media/slowing_tower.png");

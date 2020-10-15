@@ -24,5 +24,5 @@ class Map
     public:
         Map(const ResourceManager& RM);
 
-        const GPTexture get_texture(unsigned int hor_index, unsigned int vert_index) const;
+        void draw(GPLib* gp) const;
 };

@@ -32,7 +32,7 @@ class Vector2
         bool operator==(const Vector2&) const;
         bool operator!=(const Vector2&) const;
 
-        operator GPVector2();
+        operator GPVector2() const;
 
         static const Vector2 zero;
 };

@@ -25,7 +25,7 @@
 int Game::m_money = 10;
 
 Game::Game(GPLib* gp)
-: m_gp(gp), m_ResourceManager(ResourceManager(gp)), m_map(Map(m_ResourceManager)), m_EntityManager(EntityManager(m_ResourceManager))
+: m_gp(gp), m_ResourceManager(ResourceManager(gp)), m_EntityManager(EntityManager(m_ResourceManager)), m_map(Map(m_ResourceManager))
 {
     m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 4, TILE_SIZE}, m_ResourceManager, TowerType::STANDARD));
     m_ButtonManager.createButton(new ShopButton(gp, {SCREEN_WIDTH - TILE_SIZE * 5 / 2, TILE_SIZE}, m_ResourceManager, TowerType::SLOWING));
@@ -95,25 +95,12 @@ void Game::update()
 
 void Game::display() const
 {   
-    for (int i = 0; i < MAP_WIDTH; i++)
-    {
-        for (int j = 0; j < MAP_HEIGHT; j++)
-        {
-            gpDrawTexture(m_gp, m_map.get_texture(i, j), GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GP_CWHITE);
-        }
-    }
 
+    m_map.draw(m_gp);
+    
     m_EntityManager.draw(m_gp);
 
-    for (Button* button : m_ButtonManager.m_buttons)
-    {
-        if (!button)
-            continue;
-
-        gpDrawRectFilled(m_gp, GPRect{button->get_initial_position().x - TILE_SIZE / 3 * 2, button->get_initial_position().y - TILE_SIZE / 3 * 2, TILE_SIZE * 3 / 2, TILE_SIZE * 3 / 2}, GPColor{0, 0, 0, 0.5f});
-
-        gpDrawTexture(m_gp, button->m_texture, button->m_rect.position, true, button->m_color);
-    }
+    m_ButtonManager.draw(m_gp);
 
     std::string wave_string = "Wave " + std::to_string(m_EntityManager.get_wave_index()) +
                               "/" + std::to_string(m_EntityManager.get_wave_count()) +

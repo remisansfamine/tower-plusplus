@@ -7,7 +7,6 @@ class Bullet : public Entity
 {
     protected:
         float   m_speed;
-        float   m_angle;
         Enemy*  m_target = nullptr;
 
         void move(float delta_time);

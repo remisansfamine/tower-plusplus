@@ -4,7 +4,6 @@
 #include "resource_manager.h"
 
 #include <vector>
-#include <array>
 
 class Enemy : public Entity
 {
@@ -19,8 +18,7 @@ class Enemy : public Entity
         void    move(float delta_time);
 
     public:
-        static std::array<Vector2, 26>  m_waypoints;
-        static int                      m_waypoints_count;
+        static std::vector<Vector2>  m_waypoints;
 
         Enemy(Vector2 position);
 
@@ -35,4 +33,6 @@ class Enemy : public Entity
         void    stun(float);
 
         virtual void draw(GPLib* gp) override;
+
+        void    reach_castle();
 };

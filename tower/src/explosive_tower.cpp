@@ -12,11 +12,6 @@ ExplosiveTower::ExplosiveTower(Vector2 position, const ResourceManager& RM)
     m_texture = RM.get_texture(TextureType::EXPLOSIVE_IDLE);
 }
 
-void ExplosiveTower::update(float delta_time)
-{
-    Tower::update(delta_time);
-}
-
 void ExplosiveTower::create_bullet()
 {
     m_EntityManager->createBullet(new ExplosiveBullet(get_position(),

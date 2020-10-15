@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <gp/gp.h>
+
 class ShopButton;
 class Button;
 
@@ -17,4 +19,6 @@ class ButtonManager
         void    createButton(Button*);
 
         void    destroyButton(Button*);
+
+        void    draw(GPLib* gp) const;
 };

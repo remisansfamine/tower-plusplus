@@ -42,18 +42,14 @@ void    EntityManager::update(float delta_time)
 
     for (Enemy* enemy : m_enemies)
     {
-        if (!enemy)
-            continue;
-
-        enemy->update(delta_time);
+        if (enemy)
+            enemy->update(delta_time);
     }
 
     for (Bullet* bullet : m_bullets)
     {
-        if (!bullet)
-            continue;
-
-        bullet->update(delta_time);
+        if (bullet)
+            bullet->update(delta_time);
     }
 }
 
@@ -61,26 +57,20 @@ void    EntityManager::draw(GPLib* gp) const
 {
     for (Tower* tower : m_towers)
     {
-        if (!tower)
-            continue;
-
-        tower->draw(gp);
+        if (tower)
+            tower->draw(gp);        
     }
 
     for (Bullet* bullet : m_bullets)
     {
-        if (!bullet)
-            continue;
-
-        bullet->draw(gp);
+        if (bullet)
+            bullet->draw(gp);
     }
 
     for (Enemy* enemy : m_enemies)
     {
-        if (!enemy)
-            continue;
-
-        enemy->draw(gp);
+        if (enemy)
+            enemy->draw(gp);
     }
 }
 

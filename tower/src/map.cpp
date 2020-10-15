@@ -2,6 +2,8 @@
 
 #include "map.h"
 #include "enemy.h"
+#include "castle.h"
+#include "entity_manager.h"
 
 #include <cassert>
 
@@ -106,12 +108,19 @@ void    Map::generateWaypoints(const ResourceManager& RM)
     }
 
     assert(last >= 'B');
+    Enemy::m_waypoints.resize(last - 'A' + 1);
 
-    Enemy::m_waypoints_count = last - 'A' + 1;
     m_tiles[last_hor_index][last_vert_index] = RM.get_texture(TextureType::CASTLE);
 }
 
-const GPTexture Map::get_texture(unsigned int hor_index, unsigned int vert_index) const
+
+void Map::draw(GPLib* gp) const
 {
-    return m_tiles[hor_index][vert_index];
+    for (int i = 0; i < MAP_WIDTH; i++)
+    {
+        for (int j = 0; j < MAP_HEIGHT; j++)
+        {
+            gpDrawTexture(gp, m_tiles[i][j], GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GP_CWHITE);
+        }
+    }
 }

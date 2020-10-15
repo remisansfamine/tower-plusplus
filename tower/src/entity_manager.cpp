@@ -55,16 +55,16 @@ void    EntityManager::update(float delta_time)
 
 void    EntityManager::draw(GPLib* gp) const
 {
-    for (Tower* tower : m_towers)
-    {
-        if (tower)
-            tower->draw(gp);        
-    }
-
     for (Bullet* bullet : m_bullets)
     {
         if (bullet)
             bullet->draw(gp);
+    }
+
+    for (Tower* tower : m_towers)
+    {
+        if (tower)
+            tower->draw(gp);        
     }
 
     for (Enemy* enemy : m_enemies)
@@ -76,10 +76,10 @@ void    EntityManager::draw(GPLib* gp) const
 
 void EntityManager::clear()
 {
-    for (Tower* tower : m_towers)
+    for (Enemy* enemy : m_enemies)
     {
-        if (tower && tower->m_should_destroy)
-            destroyTower(tower);
+        if (enemy && enemy->m_should_destroy)
+            destroyEnemy(enemy);
     }
 
     for (Bullet* bullet : m_bullets)
@@ -88,10 +88,10 @@ void EntityManager::clear()
             destroyBullet(bullet);
     }
 
-    for (Enemy* enemy : m_enemies)
+    for (Tower* tower : m_towers)
     {
-        if (enemy && enemy->m_should_destroy)
-            destroyEnemy(enemy);
+        if (tower && tower->m_should_destroy)
+            destroyTower(tower);
     }
 }
 
@@ -156,6 +156,9 @@ void    EntityManager::destroyTower(Tower* tower)
     if (m_towers.size() == 0)
          return;
 
+    if (tower->m_slot)
+        tower->m_slot->m_is_occuped = false;
+
     *tower = *m_towers.back();
     delete m_towers.back();
     m_towers.pop_back();
@@ -192,4 +195,9 @@ const int   EntityManager::get_wave_index() const
 const int   EntityManager::get_wave_count() const
 {
     return m_wave_count;
+}
+
+unsigned int    EntityManager::get_enemy_count() const
+{
+    return m_enemies.size();
 }

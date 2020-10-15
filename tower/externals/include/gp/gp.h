@@ -256,6 +256,17 @@ enum GPInitFlags
     GP_DEPRECATION_BOTTOM_LEFT_SRC = 1 << 20
 };
 
+enum GPTextAlignmentFlags
+{
+    GP_TEXTALIGN_FIT      = 1 << 0,
+    GP_TEXTALIGN_BASELINE = 1 << 1,
+    GP_TEXTALIGN_BOTTOM   = 1 << 2,
+    GP_TEXTALIGN_TOP      = 1 << 3,
+    GP_TEXTALIGN_LEFT     = 1 << 4,
+    GP_TEXTALIGN_RIGHT    = 1 << 5,
+    GP_TEXTALIGN_CENTER   = 1 << 6,
+};
+
 GP_API GPColor GP_CWHITE;
 GP_API GPColor GP_CBLACK;
 GP_API GPSoundChannelSettings GP_SOUND_CHANNEL_DEFAULTS;
@@ -287,6 +298,8 @@ GP_API void gpDrawTextureEx2(GPLib* gp, GPTexture texture, GPRect src, GPRect ds
 GP_API void gpDrawTextureEx3(GPLib* gp, GPTexture texture, GPRect src, GPRect dst, float rot, GPVector2* pivot, GPColor tint);
 GP_API void gpDrawText(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, const char* format, ...);
 GP_API void gpDrawTextV(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, const char* format, va_list vargs);
+GP_API GPRect gpDrawTextAligned(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, int alignmentFlags, const char* format, ...);
+GP_API GPRect gpDrawTextAlignedV(GPLib* gp, GPFont font, GPVector2 pos, GPColor color, int alignmentFlags, const char* format, va_list vargs);
 
 GP_API void gpDrawTriangles(GPLib* gp, GPTexture texture, GPBlendMode blendMode, GPVertex* vertices, int vertexCount);
 

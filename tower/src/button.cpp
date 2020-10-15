@@ -76,5 +76,5 @@ void Button::is_undragged()
 
 void    Button::draw(GPLib* gp) const
 {
-    gpDrawRectFilled(gp, GPRect{m_initial_position.x - TILE_SIZE / 3 * 2, m_initial_position.y - TILE_SIZE / 3 * 2, TILE_SIZE * 3 / 2, TILE_SIZE * 3 / 2}, GPColor{0, 0, 0, 0.5f});
+    gpDrawTexture(gp, m_texture, m_rect.position, true, m_color);
 }

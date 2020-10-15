@@ -20,6 +20,12 @@ class EntityManager
         unsigned int    m_wave_index = 1;
         unsigned int    m_wave_count = 0;
 
+        void    destroyTower(Tower*);
+        void    destroyEnemy(Enemy*);
+        void    destroyBullet(Bullet*);
+
+        void    createEnemy(Enemy*);
+
     public:
         const ResourceManager m_ResourceManager;
 
@@ -38,12 +44,7 @@ class EntityManager
         void    spawn_enemies();
 
         void    createTower(Tower*);
-        void    createEnemy(Enemy*);
         void    createBullet(Bullet*);
-
-        void    destroyTower(Tower*);
-        void    destroyEnemy(Enemy*);
-        void    destroyBullet(Bullet*);
 
         const int   get_timer() const;
         const int   get_wave_index() const;
@@ -52,4 +53,6 @@ class EntityManager
         void    draw(GPLib* gp) const;
 
         void    clear();
+
+        unsigned int    get_enemy_count() const;
 };

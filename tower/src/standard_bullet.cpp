@@ -5,6 +5,7 @@
 StandardBullet::StandardBullet(Vector2 position, Enemy* enemy, const ResourceManager& RM)
 : Bullet(position, enemy)
 {
+    m_speed = 600;
     m_texture = RM.get_texture(TextureType::STANDARD_BULLET);
     m_damage = 5.f;
 }

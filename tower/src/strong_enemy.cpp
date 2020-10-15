@@ -2,7 +2,7 @@
 
 StrongEnemy::StrongEnemy(Vector2 position, const ResourceManager& RM) : Enemy(position)
 {
-    m_life = Life(50);
+    m_life = m_max_life = 50;
     m_reward = 8;
     m_damage = 25;
     m_speed = 50;

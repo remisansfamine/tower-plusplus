@@ -10,7 +10,7 @@ class Button;
 class ButtonManager
 {
     public:
-        ButtonManager::ButtonManager();
+        ButtonManager::~ButtonManager();
 
         ShopButton* m_current = nullptr;
 
@@ -21,4 +21,6 @@ class ButtonManager
         void    destroyButton(Button*);
 
         void    draw(GPLib* gp) const;
+
+        void    update();
 };

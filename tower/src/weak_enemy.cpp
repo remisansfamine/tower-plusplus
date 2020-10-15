@@ -2,7 +2,7 @@
 
 WeakEnemy::WeakEnemy(Vector2 position, const ResourceManager& RM) : Enemy(position)
 {
-    m_life = Life(25);
+    m_life = m_max_life = 25;
     m_reward = 3;
     m_damage = 10;
     m_speed = 125;

@@ -4,6 +4,7 @@
 #include "resource_manager.h"
 #include "entity_manager.h"
 #include "button_manager.h"
+#include "hud.h"
 
 #define SCREEN_WIDTH 1200
 #define SCREEN_HEIGHT 800
@@ -19,6 +20,7 @@ class Game
         EntityManager           m_EntityManager;
         ButtonManager           m_ButtonManager;
         Map                     m_map;
+        HUD                     m_hud;
 
     public:
         static int  m_money;

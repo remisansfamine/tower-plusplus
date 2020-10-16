@@ -1,9 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include "resource_manager.h"
 #include "castle.h"
 
-class ResourceManager;
 class Enemy;
 class Tower;
 class Bullet;
@@ -21,19 +22,21 @@ class EntityManager
         unsigned int    m_waveCount = 0;
 
         void    destroyTower(int index);
+
         void    destroyEnemy(int index);
+
         void    destroyBullet(int index);
 
         void    createEnemy(Enemy*);
+
+        void    spawnEnemies();
+
+        void    clear();
 
     public:
         GPLib* m_gp;
 
         const ResourceManager m_resourceManager;
-
-        EntityManager(const ResourceManager&, GPLib* gp);
-
-        ~EntityManager();
 
         std::vector<Enemy*>     m_enemies;
         std::vector<Tower*>     m_towers;
@@ -41,9 +44,11 @@ class EntityManager
 
         Castle                  m_castle;
 
-        void    update(float delta_time);
+        EntityManager(const ResourceManager&, GPLib* gp);
 
-        void    spawnEnemies();
+        ~EntityManager();
+
+        void    update(float delta_time);
 
         void    createTower(Tower*);
         void    createBullet(Bullet*);
@@ -51,10 +56,8 @@ class EntityManager
         const int   getTimer() const;
         const int   getWaveIndex() const;
         const int   getWaveCount() const;
+        const unsigned int    getEnemyCount() const;
 
         void    draw() const;
 
-        void    clear();
-
-        unsigned int    getEnemyCount() const;
 };

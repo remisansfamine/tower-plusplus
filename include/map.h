@@ -2,13 +2,7 @@
 
 #include <gp/gp.h>
 #include "resource_manager.h"
-#include "enemy.h"
-#include "tower.h"
-#include <fstream>
-
-#define MAP_WIDTH 20
-#define MAP_HEIGHT 14
-#define TILE_SIZE 60
+#include "define.h"
 
 class Map
 {

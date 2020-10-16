@@ -1,24 +1,20 @@
 #include "bullet.h"
 
 #include "entity_manager.h"
-
 #include "collisions.h"
 
 Bullet::Bullet(Vector2 position, Enemy* enemy)
 : Entity(position), m_target(enemy) { }
 
-void Bullet::update(float delta_time) 
+void Bullet::update(float deltaTime) 
 {
-    move(delta_time);
+    move(deltaTime);
 
-    get_angle(m_target->getPosition());
+    setAngle(m_target->getPosition());
 
     for (Enemy* enemy : m_entityManager->m_enemies)
     {
-        if (!enemy)
-            continue;
-
-        if (c_point_box(getPosition(), Rectangle{enemy->getPosition(), enemy->getHalfsize(), enemy->getHalfsize()}))
+        if (enemy && c_point_box(getPosition(), enemy->getRect()))
             hit(*enemy);
     }
 
@@ -40,5 +36,6 @@ void Bullet::hit(Enemy& enemy)
 
 void Bullet::draw(GPLib* gp)
 {
-    gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
+    gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle,
+                   {1, 1}, nullptr, GP_CWHITE);
 }

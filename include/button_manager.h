@@ -9,6 +9,9 @@ class Button;
 
 class ButtonManager
 {
+    private:
+        void    destroyButton(Button*);
+
     public:
         ButtonManager::~ButtonManager();
 
@@ -17,8 +20,6 @@ class ButtonManager
         std::vector<Button*> m_buttons;
 
         void    createButton(Button*);
-
-        void    destroyButton(Button*);
 
         void    draw(GPLib* gp) const;
 

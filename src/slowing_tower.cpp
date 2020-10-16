@@ -3,7 +3,6 @@
 #include "slowing_bullet.h"
 #include "entity_manager.h"
 
-
 SlowingTower::SlowingTower(TowerSlot* slot, const ResourceManager& RM)
 : Tower(slot)
 {

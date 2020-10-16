@@ -5,6 +5,10 @@
 #include "castle.h"
 #include "entity_manager.h"
 
+#include "tower.h"
+#include <fstream>
+
+#include "define.h"
 #include <cassert>
 
 void    Map::generateTilemap(const ResourceManager& RM)
@@ -27,7 +31,8 @@ void    Map::generateTilemap(const ResourceManager& RM)
     }
 }
 
-void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_index, char current)
+void    Map::interpretTile(const ResourceManager& RM,
+                           int hor_index, int vert_index, char current)
 {
     switch (current)
     {
@@ -48,7 +53,9 @@ void    Map::interpretTile(const ResourceManager& RM, int hor_index, int vert_in
             break;
 
         case '@':
-            Tower::m_towerSlots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE + TILE_SIZE / 2, vert_index * TILE_SIZE + TILE_SIZE / 2)));
+            Tower::m_towerSlots.push_back(TowerSlot(Vector2(hor_index * TILE_SIZE +
+                                                    TILE_SIZE / 2, vert_index * TILE_SIZE +
+                                                    TILE_SIZE / 2)));
             m_tiles[hor_index][vert_index] = RM.getTexture(TextureType::TOWER_SLOT);
             break;
         
@@ -102,7 +109,8 @@ void    Map::generateWaypoints(const ResourceManager& RM)
                 last = current;
             }
 
-            Enemy::m_waypoints[current - 'A'] = Vector2(horIndex * TILE_SIZE + TILE_SIZE / 2, vertIndex * TILE_SIZE + TILE_SIZE / 2);
+            Enemy::m_waypoints[current - 'A'] = Vector2(horIndex * TILE_SIZE + TILE_SIZE / 2,
+                                                        vertIndex * TILE_SIZE + TILE_SIZE / 2);
         }
         horIndex++;
     }
@@ -119,7 +127,8 @@ void Map::draw(GPLib* gp) const
     {
         for (int j = 0; j < MAP_HEIGHT; j++)
         {
-            gpDrawTexture(gp, m_tiles[i][j], GPVector2{(float)TILE_SIZE * i, (float)TILE_SIZE * j}, false, GP_CWHITE);
+            gpDrawTexture(gp, m_tiles[i][j], {(float)TILE_SIZE * i, (float)TILE_SIZE * j},
+                         false, GP_CWHITE);
         }
     }
 }

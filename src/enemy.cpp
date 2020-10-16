@@ -1,20 +1,13 @@
 #include "enemy.h"
-#include <iostream>
 
 #include "game.h"
 
 std::vector<Vector2> Enemy::m_waypoints(26);
 
-Enemy::Enemy(Vector2 position) : Entity(position)
-{
-
-}
+Enemy::Enemy(Vector2 position) : Entity(position) { }
 
 void Enemy::move(float delta_time)
 {
-    if (m_currentWaypoint == Enemy::m_waypoints.size())
-        return;
-
     m_stunCooldown -= delta_time;
 
     if (m_position.getDistance(m_waypoints[m_currentWaypoint]) <= 16)
@@ -43,11 +36,11 @@ float  Enemy::getHalfsize() const
     return m_rect.halfheight;
 }
 
-void    Enemy::update(float delta_time)
+void    Enemy::update(float deltaTime)
 {
-    move(delta_time);
+    move(deltaTime);
 
-    get_angle(m_waypoints[m_currentWaypoint]);
+    setAngle(m_waypoints[m_currentWaypoint]);
 
     if (m_life <= 0)
     {
@@ -81,6 +74,8 @@ void    Enemy::draw(GPLib* gp)
 void Enemy::reachCastle()
 {
     m_shouldDestroy = true;
+
+    Game::m_money = clamp(Game::m_money - getReward() * 1.25f, 0, getReward() * 1.25f);
 
     m_entityManager->m_castle.m_life -= m_damage;
 }

@@ -1,6 +1,7 @@
 #include "slowing_bullet.h"
 
-SlowingBullet::SlowingBullet(Vector2 position, Enemy* enemy, const ResourceManager& RM)
+SlowingBullet::SlowingBullet(Vector2 position, Enemy* enemy,
+                             const ResourceManager& RM)
 : Bullet(position, enemy)
 {
     m_speed = 800;

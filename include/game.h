@@ -6,9 +6,6 @@
 #include "button_manager.h"
 #include "hud.h"
 
-#define SCREEN_WIDTH 1200
-#define SCREEN_HEIGHT 800
-
 class Game
 {
     private:

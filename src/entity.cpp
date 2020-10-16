@@ -16,7 +16,7 @@ Vector2 Entity::getPosition() const
 {
     return m_position;
 }
-void Entity::get_angle(Vector2 target)
+void Entity::setAngle(Vector2 target)
 {
     Vector2 vect = target - m_position;
 

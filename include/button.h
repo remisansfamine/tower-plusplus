@@ -6,27 +6,30 @@
 #include "resource_manager.h"
 
 class ButtonManager;
+
 class Button
 {
     protected:
         GPLib*      m_gp;
+        Vector2     m_lastMousepos;
+        Vector2     m_initialPosition;
         bool        m_isPressed = false;
         bool        m_isDragged = false;
         bool        m_isDraggable = false;
-        Vector2     m_lastMousepos;
-        Vector2     m_initialPosition;
-
+        
     public:
-        ButtonManager*   m_buttonManager;
-        GPTexture   m_texture;
-        GPColor     m_color = GP_CWHITE;
-        Rectangle   m_rect;
+        ButtonManager*  m_buttonManager;
+        GPTexture       m_texture;
+        GPColor         m_color = GP_CWHITE;
+        Rectangle       m_rect;
+        bool            m_isUndragged = false;
+
 
         Button(GPLib* gp, Vector2 position);
 
         virtual void update();
 
-        virtual void isPressed(Vector2 mouse_pos);
+        virtual void isPressed();
         virtual void isReleased();
         virtual void isDown(Vector2 mouse_pos);
         virtual void isUp();

@@ -11,6 +11,12 @@
 #include "define.h"
 #include <cassert>
 
+Map::Map(const ResourceManager& RM)
+{
+    generateTilemap(RM);
+    generateWaypoints(RM);
+}
+
 void    Map::generateTilemap(const ResourceManager& RM)
 {
     std::ifstream infile("media/tilemap.txt");
@@ -80,12 +86,6 @@ void    Map::interpretTile(const ResourceManager& RM,
     }
 }
 
-Map::Map(const ResourceManager& RM)
-{
-    generateTilemap(RM);
-    generateWaypoints(RM);
-}
-
 void    Map::generateWaypoints(const ResourceManager& RM)
 {
     std::ifstream infile("media/waypoint.txt");
@@ -121,7 +121,7 @@ void    Map::generateWaypoints(const ResourceManager& RM)
     m_tiles[lastHorIndex][lastVertIndex] = RM.getTexture(TextureType::CASTLE);
 }
 
-void Map::draw(GPLib* gp) const
+void    Map::draw(GPLib* gp) const
 {
     for (int i = 0; i < MAP_WIDTH; i++)
     {

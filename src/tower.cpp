@@ -17,11 +17,11 @@ Tower::~Tower()
         m_slot->m_isAvailable = true;
 }
 
-void Tower::update(float delta_time, GPLib* m_gp)
+void    Tower::update(float delta_time, GPLib* m_gp)
 {
     Vector2 mousePos = gpMousePosition(m_gp);
 
-    if (c_point_box(mousePos, Rectangle{m_position, 32, 32}))
+    if (c_point_box(mousePos, getRect()))
     {
         if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_2))
             m_shouldDestroy = true;
@@ -54,12 +54,12 @@ void Tower::update(float delta_time, GPLib* m_gp)
         m_shouldDestroy = true;
 }
 
-void Tower::getTarget()
+void    Tower::getTarget()
 {
     for (Enemy* enemy : m_entityManager->m_enemies)
     {
         if (enemy && !enemy->m_shouldDestroy &&
-        c_circle_point({m_range, m_position}, enemy->getPosition()))
+        c_circle_point(getCircle(), enemy->getPosition()))
         {
             m_target = enemy;
             break;
@@ -67,7 +67,7 @@ void Tower::getTarget()
     }
 }
 
-void Tower::shoot()
+void    Tower::shoot()
 {
     if (m_cooldown <= 0)
     {
@@ -77,7 +77,7 @@ void Tower::shoot()
     }
 }
 
-void Tower::upgrade()
+void    Tower::upgrade()
 {
     m_price *= 1.5f;
     Game::m_money -= m_price;
@@ -90,8 +90,14 @@ void Tower::upgrade()
     m_level++;
 }
 
+void    Tower::draw(GPLib* gp)
+{
+    drawLifebar(gp);
 
-void Tower::draw(GPLib* gp)
+    gpDrawTextureEx(gp, m_texture, {TILE_SIZE, TILE_SIZE}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
+}
+
+void    Tower::drawLifebar(GPLib* gp) const
 {
     GPRect lifebar = {m_position.x - TILE_SIZE / 2, m_position.y + TILE_SIZE / 2 + 5, TILE_SIZE, TILE_SIZE / 8};
     gpDrawRectFilled(gp, lifebar, GP_CWHITE);
@@ -101,8 +107,14 @@ void Tower::draw(GPLib* gp)
 
     lifebar.w /= m_life / m_max_life;
     gpDrawRect(gp, lifebar, GP_CBLACK);
+}
 
-    gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
+Circle Tower::getCircle() const
+{
+    return Circle{m_range, m_position};
+}
 
-    gpDrawCircle(gp, m_position, m_range, {1, 0, 0, 1});
+Rectangle Tower::getRect() const
+{
+    return Rectangle{getPosition(), TILE_SIZE / 2, TILE_SIZE / 2};
 }

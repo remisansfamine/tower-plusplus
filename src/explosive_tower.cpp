@@ -14,7 +14,7 @@ ExplosiveTower::ExplosiveTower(TowerSlot* slot, const ResourceManager& RM)
     m_texture = RM.getTexture(TextureType::EXPLOSIVE_IDLE);
 }
 
-void ExplosiveTower::createBullet()
+void    ExplosiveTower::createBullet()
 {
     m_entityManager->createBullet(new ExplosiveBullet(getPosition(),
                                                  m_target,

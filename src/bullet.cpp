@@ -6,7 +6,7 @@
 Bullet::Bullet(Vector2 position, Enemy* enemy)
 : Entity(position), m_target(enemy) { }
 
-void Bullet::update(float deltaTime) 
+void    Bullet::update(float deltaTime) 
 {
     move(deltaTime);
 
@@ -22,19 +22,19 @@ void Bullet::update(float deltaTime)
         m_shouldDestroy = true;
 }
 
-void Bullet::move(float delta_time)
+void    Bullet::move(float delta_time)
 {
     m_direction = (m_target->getPosition() - m_position).normalize();
     m_position += m_direction * m_speed * delta_time;
 }
 
-void Bullet::hit(Enemy& enemy)
+void    Bullet::hit(Enemy& enemy)
 {
     enemy.m_life -= m_damage;
     m_shouldDestroy = true;
 }
 
-void Bullet::draw(GPLib* gp)
+void    Bullet::draw(GPLib* gp)
 {
     gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle,
                    {1, 1}, nullptr, GP_CWHITE);

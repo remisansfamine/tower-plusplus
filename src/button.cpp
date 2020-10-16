@@ -1,12 +1,8 @@
-#include "map.h"
-
 #include "button.h"
 
-#include "collisions.h"
-
 #include "button_manager.h"
-
-#include <iostream>
+#include "define.h"
+#include "collisions.h"
 
 Button::Button(GPLib* gp, Vector2 position)
 : m_gp(gp)
@@ -14,7 +10,7 @@ Button::Button(GPLib* gp, Vector2 position)
     m_rect = {position, TILE_SIZE / 2, TILE_SIZE / 2};
 }
 
-void Button::update()
+void    Button::update()
 {
     if (m_isUndragged)
         isUndragged();
@@ -43,12 +39,12 @@ void Button::update()
     m_lastMousepos = mousePos;
 }
 
-void Button::isPressed()
+void    Button::isPressed()
 {
     m_isPressed = true;
 }
 
-void Button::isReleased()
+void    Button::isReleased()
 {
     m_isPressed = false;
     
@@ -56,28 +52,28 @@ void Button::isReleased()
         m_isUndragged = true;
 }
 
-void Button::isDown(Vector2 mousePos)
+void    Button::isDown(Vector2 mousePos)
 {
     if (m_lastMousepos != mousePos && m_isPressed)
         m_isDragged = m_isDraggable;
 }
 
-void Button::isUp()
+void    Button::isUp()
 {
 
 }
 
-void Button::isHightlighted()
+void    Button::isHightlighted()
 {
 
 }
 
-void Button::isDragged(Vector2 mousePos)
+void    Button::isDragged(Vector2 mousePos)
 {
     m_rect.position = mousePos;
 }
 
-void Button::isUndragged()
+void    Button::isUndragged()
 {
     m_buttonManager->m_current = nullptr;
 
@@ -88,4 +84,9 @@ void Button::isUndragged()
 void    Button::draw(GPLib* gp) const
 {
     gpDrawTexture(gp, m_texture, m_rect.position, true, m_color);
+}
+
+Vector2 Button::getPosition() const
+{
+    return m_rect.position;
 }

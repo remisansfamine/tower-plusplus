@@ -19,11 +19,20 @@ class Enemy;
 class Tower : public Entity
 {
     protected:
-        Enemy*  m_target = nullptr;
-        float   m_fireRate;
-        float   m_cooldown;
-        float   m_range;
+        GPTexture   m_upgrades_texture[2];
+        Enemy*      m_target = nullptr;
+        int         m_level = 0;
+        float       m_fireRate;
+        float       m_cooldown;
+        float       m_range;
         
+        void    getTarget();
+        void    shoot();
+
+        virtual void upgrade();
+
+        virtual void    createBullet() = 0;
+
     public:
         int         m_price;
         TowerSlot*  m_slot = nullptr;
@@ -33,12 +42,6 @@ class Tower : public Entity
         ~Tower();
 
         virtual void update(float deltaTime, GPLib* gp);
-
-        void getTarget();
-
-        void shoot();
-
-        virtual void createBullet() = 0;
 
         void draw(GPLib* gp) override;
 };

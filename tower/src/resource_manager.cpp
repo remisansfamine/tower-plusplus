@@ -2,35 +2,62 @@
 
 ResourceManager::ResourceManager(GPLib* gp) : m_gp(gp)
 {
+    // HUD font
     m_font = gpFontLoad(m_gp, "media/unique.ttf", 30);
 
-    m_textures[(unsigned int)TextureType::STANDARD_IDLE] = gpTextureLoadFromFile(gp, "media/standard_tower.png");
-    m_textures[(unsigned int)TextureType::SLOWING_IDLE] = gpTextureLoadFromFile(gp, "media/slowing_tower.png");
-    m_textures[(unsigned int)TextureType::EXPLOSIVE_IDLE] = gpTextureLoadFromFile(gp, "media/explosive_tower.png");
+    // Towers textures
+    m_textures[(unsigned int)TextureType::STANDARD_IDLE] =
+    gpTextureLoadFromFile(gp, "media/standard_tower.png");
+    m_textures[(unsigned int)TextureType::SLOWING_IDLE] =
+    gpTextureLoadFromFile(gp, "media/slowing_tower.png");
+    m_textures[(unsigned int)TextureType::EXPLOSIVE_IDLE] =
+    gpTextureLoadFromFile(gp, "media/explosive_tower.png");
+    m_textures[(unsigned int)TextureType::TOWER_SLOT] =
+    gpTextureLoadFromFile(gp, "media/tower_slot.png");
 
-    m_textures[(unsigned int)TextureType::TOWER_SLOT] = gpTextureLoadFromFile(gp, "media/tower_slot.png");
+    // Enemies textures
+    m_textures[(unsigned int)TextureType::WEAK_ENEMY_IDLE] =
+    gpTextureLoadFromFile(gp, "media/weak_enemy.png");
+    m_textures[(unsigned int)TextureType::HEALER_ENEMY_IDLE] =
+    gpTextureLoadFromFile(gp, "media/healer_enemy.png");
+    m_textures[(unsigned int)TextureType::STRONG_ENEMY_IDLE] =
+    gpTextureLoadFromFile(gp, "media/strong_enemy.png");
 
-    m_textures[(unsigned int)TextureType::WEAK_ENEMY_IDLE] = gpTextureLoadFromFile(gp, "media/weak_enemy.png");
-    m_textures[(unsigned int)TextureType::HEALER_ENEMY_IDLE] = gpTextureLoadFromFile(gp, "media/healer_enemy.png");
-    m_textures[(unsigned int)TextureType::STRONG_ENEMY_IDLE] = gpTextureLoadFromFile(gp, "media/strong_enemy.png");
+    // Bullets textures
+    m_textures[(unsigned int)TextureType::STANDARD_BULLET] =
+    gpTextureLoadFromFile(gp, "media/standard_bullet.png");
+    m_textures[(unsigned int)TextureType::SLOWING_BULLET] =
+    gpTextureLoadFromFile(gp, "media/slowing_bullet.png");
+    m_textures[(unsigned int)TextureType::EXPLOSIVE_BULLET] =
+    gpTextureLoadFromFile(gp, "media/explosive_bullet.png");
 
-    m_textures[(unsigned int)TextureType::STANDARD_BULLET] = gpTextureLoadFromFile(gp, "media/standard_bullet.png");
-    m_textures[(unsigned int)TextureType::SLOWING_BULLET] = gpTextureLoadFromFile(gp, "media/slowing_bullet.png");
-    m_textures[(unsigned int)TextureType::EXPLOSIVE_BULLET] = gpTextureLoadFromFile(gp, "media/explosive_bullet.png");
+    // Grass texture
+    m_textures[(unsigned int)TextureType::GRASS] =
+    gpTextureLoadFromFile(gp, "media/grass1.png");
 
-    m_textures[(unsigned int)TextureType::GRASS] = gpTextureLoadFromFile(gp, "media/grass1.png");
+    // Path textures
+    m_textures[(unsigned int)TextureType::PATH_EAST] =
+    gpTextureLoadFromFile(gp, "media/pathEast.png");
+    m_textures[(unsigned int)TextureType::PATH_NORTH] =
+    gpTextureLoadFromFile(gp, "media/pathNorth.png");
+    m_textures[(unsigned int)TextureType::PATH_C_LB] =
+    gpTextureLoadFromFile(gp, "media/pathCornerLB.png");
+    m_textures[(unsigned int)TextureType::PATH_C_RB] =
+    gpTextureLoadFromFile(gp, "media/pathCornerRB.png");
+    m_textures[(unsigned int)TextureType::PATH_C_UL] =
+    gpTextureLoadFromFile(gp, "media/pathCornerUL.png");
+    m_textures[(unsigned int)TextureType::PATH_C_UR] = 
+    gpTextureLoadFromFile(gp, "media/pathCornerUR.png");
+    m_textures[(unsigned int)TextureType::PATH_C_ULRB] =
+    gpTextureLoadFromFile(gp, "media/pathCornerULRB.png");
 
-    m_textures[(unsigned int)TextureType::PATH_EAST] = gpTextureLoadFromFile(gp, "media/pathEast.png");
-    m_textures[(unsigned int)TextureType::PATH_NORTH] = gpTextureLoadFromFile(gp, "media/pathNorth.png");
-    m_textures[(unsigned int)TextureType::PATH_C_LB] = gpTextureLoadFromFile(gp, "media/pathCornerLB.png");
-    m_textures[(unsigned int)TextureType::PATH_C_RB] = gpTextureLoadFromFile(gp, "media/pathCornerRB.png");
-    m_textures[(unsigned int)TextureType::PATH_C_UL] = gpTextureLoadFromFile(gp, "media/pathCornerUL.png");
-    m_textures[(unsigned int)TextureType::PATH_C_UR] = gpTextureLoadFromFile(gp, "media/pathCornerUR.png");
-    m_textures[(unsigned int)TextureType::PATH_C_ULRB] = gpTextureLoadFromFile(gp, "media/pathCornerULRB.png");
-
-    m_textures[(unsigned int)TextureType::CASTLE] = GPTexture(gpTextureLoadFromFile(gp, "media/castle.png"));
+    // Castle texture
+    m_textures[(unsigned int)TextureType::CASTLE] =
+    GPTexture(gpTextureLoadFromFile(gp, "media/castle.png"));
     
-    m_textures[(unsigned int)TextureType::ERROR] = GPTexture(gpTextureLoadFromFile(gp, "media/error.png"));
+    // ERROR texture
+    m_textures[(unsigned int)TextureType::ERROR] =
+    GPTexture(gpTextureLoadFromFile(gp, "media/error.png"));
 }
 
 ResourceManager::~ResourceManager()

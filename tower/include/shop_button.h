@@ -8,7 +8,7 @@ class ShopButton : public Button
         TowerType   m_type;
         int         m_price;
 
-        void isPressed(Vector2 mousePos) override;
+        void isPressed() override;
 
     public:
         ShopButton(GPLib*, Vector2, const ResourceManager&, TowerType);

@@ -18,7 +18,7 @@ class Entity
         Vector2     m_direction;
         GPTexture   m_texture;
 
-        void Entity::get_angle(Vector2 target);
+        void    setAngle(Vector2 target);
 
     public:
         EntityManager* m_entityManager;

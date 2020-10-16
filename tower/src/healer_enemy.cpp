@@ -1,4 +1,5 @@
 #include "healer_enemy.h"
+
 #include "collisions.h"
 #include "entity_manager.h"
 
@@ -24,25 +25,25 @@ void HealerEnemy::update(float delta_time)
 
     if (m_target)
     {
-        if (c_circle_box(Circle{m_range, m_position}, m_target->getRect()) && !m_target->m_shouldDestroy)
+        if (c_circle_box(Circle{m_range, m_position}, m_target->getRect()) &&
+        !m_target->m_shouldDestroy)
         {
             m_target->m_life += m_healRate * delta_time;
         }
         else m_target = nullptr;
     }
-    else
+    else if (m_life <= m_max_life)
     {
-        if (m_life <= m_max_life)
-            m_life += m_healRate * delta_time;
+        m_life += m_healRate * delta_time / 2;
     }
 }
 
 void HealerEnemy::draw(GPLib* gp)
 {
     if (m_target)
-        gpDrawLine(gp, m_position, m_target->getPosition(), GPColor{1, 0, 0, 1});
+        gpDrawLine(gp, m_position, m_target->getPosition(), {1, 0, 0, 1});
     else if (m_life <= m_max_life)
-        gpDrawCircleFilled(gp, m_position, m_range, GPColor{0, 0, 1, 0.25f});
+        gpDrawCircleFilled(gp, m_position, m_range, {0, 0, 1, 0.25f});
 
     Enemy::draw(gp);
 }

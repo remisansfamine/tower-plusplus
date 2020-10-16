@@ -6,7 +6,7 @@ class HealerEnemy : public Enemy
 {
     private:
         float   m_range = 50;
-        float   m_healRate = 0.5f;
+        float   m_healRate = 1.5f;
         Enemy*  m_target = nullptr;
 
     public:

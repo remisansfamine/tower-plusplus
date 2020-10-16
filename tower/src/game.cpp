@@ -1,7 +1,6 @@
 #include <cmath>
 
-#include <iostream>
-#include <algorithm>
+#include "define.h"
 
 #include "maths.h"
 #include "collisions.h"
@@ -20,7 +19,7 @@ int Game::m_money = 10;
 Game::Game(GPLib* gp)
 : m_gp(gp), m_resourceManager(gp),
 m_entityManager(m_resourceManager, gp),
-m_map(m_resourceManager)
+m_map(m_resourceManager), m_hud(&m_entityManager)
 {
     for (int i = 0; i < (int)TowerType::COUNT; i++)
     {
@@ -36,34 +35,37 @@ void Game::update()
 
     float deltaTime = getDeltaTime();
 
+    m_buttonManager.update();
+
     for (TowerSlot& slot : Tower::m_towerSlots)
     {  
-        if (!m_buttonManager.m_current || !slot.m_isAvailable)
-            continue;
+        if (!m_buttonManager.m_current)
+            break;
 
-        if (c_point_box(mousePos, slot.getCollision()))
+        if (slot.m_isAvailable && c_point_box(mousePos, slot.getCollision()))
         {
-            m_money -= m_buttonManager.m_current->getPrice();
-            slot.m_isAvailable = false;
-            switch (m_buttonManager.m_current->getType())
+            if (m_buttonManager.m_current->m_isUndragged)
             {
-                case TowerType::STANDARD:
-                    m_entityManager.createTower(new StandardTower(&slot, m_resourceManager));
-                    break;
+                m_money -= m_buttonManager.m_current->getPrice();
+                slot.m_isAvailable = false;
+                switch (m_buttonManager.m_current->getType())
+                {
+                    case TowerType::STANDARD:
+                        m_entityManager.createTower(new StandardTower(&slot, m_resourceManager));
+                        break;
 
-                case TowerType::SLOWING:
-                    m_entityManager.createTower(new SlowingTower(&slot, m_resourceManager));
-                    break;
+                    case TowerType::SLOWING:
+                        m_entityManager.createTower(new SlowingTower(&slot, m_resourceManager));
+                        break;
 
-                case TowerType::EXPLOSIVE:
-                    m_entityManager.createTower(new ExplosiveTower(&slot, m_resourceManager));
-                    break;
+                    case TowerType::EXPLOSIVE:
+                        m_entityManager.createTower(new ExplosiveTower(&slot, m_resourceManager));
+                        break;
+                }
             }
-            m_buttonManager.m_current->isUndragged();
         }
     }
 
-    m_buttonManager.update();
     
     m_entityManager.update(deltaTime);
 }
@@ -77,27 +79,6 @@ void Game::display() const
     m_hud.draw(m_gp);
 
     m_buttonManager.draw(m_gp);
-
-    std::string wave_string = "Wave " + std::to_string(m_entityManager.getWaveIndex()) +
-                              "/" + std::to_string(m_entityManager.getWaveCount()) + " - ";
-    
-    int timer = m_entityManager.getTimer();
-
-    if (timer > 0)
-        wave_string += "Next wave in: " + std::to_string(timer) + "s";
-    else
-    {
-        int enemy_count = m_entityManager.getEnemyCount();
-        wave_string += std::to_string(enemy_count) +
-                      (enemy_count > 1 ? " enemies" : " enemy") + " left";
-    }
-
-    gpDrawTextAligned(m_gp, m_resourceManager.getFont(), {SCREEN_WIDTH / 2, 25},
-                      GP_CBLACK, GP_TEXTALIGN_CENTER, wave_string.c_str());
-
-    std::string money_string = "Money: $" + std::to_string(m_money);
-    gpDrawTextAligned(m_gp, m_resourceManager.getFont(), {SCREEN_WIDTH / 2, 75},
-                      GP_CBLACK, GP_TEXTALIGN_CENTER, money_string.c_str());
 }
 
 float Game::getDeltaTime()

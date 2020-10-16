@@ -1,4 +1,5 @@
 #include <iostream>
+#include "define.h"
 
 #include <gp/gp.h>
 
@@ -13,7 +14,6 @@ int main(int argc, char* argv[])
 
     while (gpWindowShouldClose(gp) == false)
     {
-        // Poll events (mouse, keyboards, etc...)
         gpEventsPoll(gp);
 
         game.update();

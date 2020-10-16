@@ -2,7 +2,8 @@
 
 #include "game.h"
 
-ShopButton::ShopButton(GPLib* gp, Vector2 position, const ResourceManager& RM, TowerType type)
+ShopButton::ShopButton(GPLib* gp, Vector2 position,
+                       const ResourceManager& RM, TowerType type)
 : Button(gp, position)
 {
     m_initialPosition = position;
@@ -35,9 +36,9 @@ void ShopButton::update()
     Button::update();
 }
 
-void ShopButton::isPressed(Vector2 mouse_pos)
+void ShopButton::isPressed()
 {
-    Button::isPressed(mouse_pos);
+    Button::isPressed();
 
     if (m_isDraggable)
         m_buttonManager->m_current = this;

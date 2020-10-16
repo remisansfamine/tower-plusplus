@@ -1,8 +1,8 @@
 #include <fstream>
-#include <string>
 
 #include "resource_manager.h"
 #include "entity_manager.h"
+#include "game.h"
 
 #include "bullet.h"
 #include "tower.h"
@@ -83,7 +83,6 @@ void    EntityManager::draw() const
     }
 }
 
-#include <algorithm>
 void EntityManager::clear()
 {
     for (int i = 0; i < m_enemies.size(); ++i)
@@ -120,9 +119,11 @@ void    EntityManager::spawnEnemies()
             break;
 
         case '\n':
-            if (m_enemies.size() == 0)
+            if (m_enemies.size() == 0 && m_waveIndex < m_waveCount)
             {
-                m_spawnCooldown = (m_waveTimer * m_waveIndex++);
+                Game::m_money = clamp(Game::m_money, 5, Game::m_money);
+                m_waveIndex++;
+                m_spawnCooldown = (m_waveTimer * m_waveIndex);
                 m_isInWave = false;
             }
             else
@@ -134,6 +135,7 @@ void    EntityManager::spawnEnemies()
     }
 }
 
+#pragma region Entity creators
 void    EntityManager::createTower(Tower* tower)
 {
     m_towers.push_back(tower);
@@ -151,7 +153,9 @@ void    EntityManager::createBullet(Bullet* bullet)
     m_bullets.push_back(bullet);
     bullet->m_entityManager = this;
 }
+#pragma endregion
 
+#pragma region Entity destroyers 
 void    EntityManager::destroyTower(int index)
 {
     Tower* tower = m_towers[index];
@@ -184,7 +188,9 @@ void    EntityManager::destroyBullet(int index)
         delete bullet;
     }
 }
+#pragma endregion
 
+#pragma region Accessers
 const int     EntityManager::getTimer() const
 {
     return m_spawnCooldown < 0 || m_isInWave ? 0 : m_spawnCooldown;
@@ -200,7 +206,8 @@ const int   EntityManager::getWaveCount() const
     return m_waveCount;
 }
 
-unsigned int    EntityManager::getEnemyCount() const
+const unsigned int    EntityManager::getEnemyCount() const
 {
     return m_enemies.size();
 }
+#pragma endregion

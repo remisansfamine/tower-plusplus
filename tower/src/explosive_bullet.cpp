@@ -1,8 +1,10 @@
 #include "explosive_bullet.h"
+
 #include "entity_manager.h"
 #include "collisions.h"
 
-ExplosiveBullet::ExplosiveBullet(Vector2 position, Enemy* enemy, const ResourceManager& RM)
+ExplosiveBullet::ExplosiveBullet(Vector2 position, Enemy* enemy,
+                                 const ResourceManager& RM)
 : Bullet(position, enemy)
 {
     m_speed = 300;

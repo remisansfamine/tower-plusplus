@@ -1,15 +1,8 @@
 #include "tower.h"
 
-#include "map.h"
-
 #include "game.h"
-
-#include "resource_manager.h"
 #include "entity_manager.h"
 #include "enemy.h"
-
-#include "bullet.h"
-
 #include "collisions.h"
 
 std::vector<TowerSlot> Tower::m_towerSlots;
@@ -18,21 +11,23 @@ Tower::Tower(TowerSlot* slot) : Entity(slot->getPosition()), m_slot(slot) { }
 
 Tower::~Tower()
 {
+    Game::m_money += (m_life / m_max_life) * m_price / 2;
+
     if (m_slot)
         m_slot->m_isAvailable = true;
 }
 
 void Tower::update(float delta_time, GPLib* m_gp)
 {
-    Vector2 mouse_pos = gpMousePosition(m_gp);
+    Vector2 mousePos = gpMousePosition(m_gp);
 
-    if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_2))
+    if (c_point_box(mousePos, Rectangle{m_position, 32, 32}))
     {
-        if (c_point_box(getPosition(), Rectangle{mouse_pos, 32, 32}))
-        {
+        if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_2))
             m_shouldDestroy = true;
-            Game::m_money += (m_life / m_max_life) * m_price / 2;
-        }
+
+        if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_1) && Game::m_money >= m_price * 1.5f)
+            upgrade();
     }
 
     if (m_entityManager->getEnemyCount() != 0)
@@ -42,10 +37,10 @@ void Tower::update(float delta_time, GPLib* m_gp)
 
     if (m_target)
     {
-        if (c_circle_box({m_range, getPosition()}, m_target->getRect()) &&
+        if (c_circle_box({m_range, m_position}, m_target->getRect()) &&
         !m_target->m_shouldDestroy)
         {
-            get_angle(m_target->getPosition());
+            setAngle(m_target->getPosition());
 
             shoot();
         }
@@ -64,7 +59,7 @@ void Tower::getTarget()
     for (Enemy* enemy : m_entityManager->m_enemies)
     {
         if (enemy && !enemy->m_shouldDestroy &&
-        c_circle_point({m_range, getPosition()}, enemy->getPosition()))
+        c_circle_point({m_range, m_position}, enemy->getPosition()))
         {
             m_target = enemy;
             break;
@@ -82,6 +77,20 @@ void Tower::shoot()
     }
 }
 
+void Tower::upgrade()
+{
+    m_price *= 1.5f;
+    Game::m_money -= m_price;
+
+    m_max_life *= 1.1f;
+    m_life = m_max_life;
+    m_fireRate *= 1.1f;
+    m_range *= 1.1f;
+
+    m_level++;
+}
+
+
 void Tower::draw(GPLib* gp)
 {
     GPRect lifebar = {m_position.x - TILE_SIZE / 2, m_position.y + TILE_SIZE / 2 + 5, TILE_SIZE, TILE_SIZE / 8};
@@ -95,5 +104,5 @@ void Tower::draw(GPLib* gp)
 
     gpDrawTextureEx(gp, m_texture, {64, 64}, m_position, m_angle, {1, 1}, nullptr, GP_CWHITE);
 
-    gpDrawCircle(gp, m_position, m_range, GPColor{1, 0, 0, 1});
+    gpDrawCircle(gp, m_position, m_range, {1, 0, 0, 1});
 }

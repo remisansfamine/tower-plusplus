@@ -1,8 +1,6 @@
 #include "collisions.h"
 #include <cmath>
 
-#include <iostream>
-
 bool c_circle_point(Circle circle,Vector2 point)
 {
     return (point - circle.center).getSquareMagnitude() <= pow(circle.radius, 2);

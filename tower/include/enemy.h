@@ -8,14 +8,16 @@
 class Enemy : public Entity
 {
     protected:
-        float   m_speed;
         int     m_currentWaypoint = 0;
-        int     m_reward;
         int     m_libebarOffset = 5;
-        float   m_stunCooldown = 0;
+        int     m_reward;
+        float   m_stunCooldown = 0.f;
+        float   m_speed;
         Rectangle   m_rect = {{0, 0}, 32, 32};
 
         void    move(float delta_time);
+
+        void    reachCastle();
 
     public:
         static std::vector<Vector2>  m_waypoints;
@@ -33,6 +35,4 @@ class Enemy : public Entity
         void    stun(float);
 
         virtual void draw(GPLib* gp) override;
-
-        void    reachCastle();
 };

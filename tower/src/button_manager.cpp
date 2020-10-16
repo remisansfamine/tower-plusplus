@@ -2,8 +2,6 @@
 
 #include "button.h"
 
-#include "map.h"
-
 ButtonManager::~ButtonManager()
 {
     for (Button* button : m_buttons)

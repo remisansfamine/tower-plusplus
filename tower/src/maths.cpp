@@ -2,8 +2,6 @@
 
 #include "maths.h"
 
-#include <iostream>
-
 #pragma region constants
 const Vector2 Vector2::zero (0, 0);
 #pragma endregion
@@ -27,10 +25,22 @@ Vector2::Vector2(GPVector2 vect, bool isUnitary) : x(vect.x), y(vect.y)
 #pragma endregion
 
 #pragma region vector functions
-float Vector2::getSquareMagnitude() const { return pow(x, 2) + pow(y, 2); }
-float Vector2::getMagnitude() const { return sqrt(getSquareMagnitude()); }
-float Vector2::getDistance(const Vector2& other) const { return (*this - other).getMagnitude(); }
-float Vector2::getSquareDistance(const Vector2& other) const { return (*this - other).getSquareMagnitude(); }
+float Vector2::getSquareMagnitude() const
+{
+    return pow(x, 2) + pow(y, 2);
+}
+float Vector2::getMagnitude() const
+{
+    return sqrt(getSquareMagnitude());
+}
+float Vector2::getDistance(const Vector2& other) const
+{
+    return (*this - other).getMagnitude();
+}
+float Vector2::getSquareDistance(const Vector2& other) const
+{
+    return (*this - other).getSquareMagnitude();
+}
 Vector2& Vector2::normalize()
 {
     float magnitude = getMagnitude();

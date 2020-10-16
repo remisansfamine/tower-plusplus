@@ -10,194 +10,197 @@
 #include "healer_enemy.h"
 #include "weak_enemy.h"
 
-EntityManager::EntityManager(const ResourceManager& RM)
-: m_ResourceManager(RM)
+EntityManager::EntityManager(const ResourceManager& RM, GPLib* gp)
+: m_resourceManager(RM), m_gp(gp)
 {
-    m_spawn_cooldown = m_spawn_rate;
+    m_spawnCooldown = m_spawnRate;
 
     std::ifstream  stream("media/spawn_pattern.txt");
 
-    for (std::string line; getline(stream, line); m_wave_count++)
-        m_spawn_pattern += line + "\n";
+    for (std::string line; getline(stream, line); m_waveCount++)
+        m_spawnPattern += line + "\n";
 }
 
 EntityManager::~EntityManager()
 {
     for (Enemy* enemy : m_enemies)
-        destroyEnemy(enemy);
+        delete enemy;
 
     for (Tower* tower : m_towers)
-        destroyTower(tower);
-
+        delete tower;
+        
     for (Bullet* bullet : m_bullets)
-        destroyBullet(bullet);
+        delete bullet;
 }
 
-void    EntityManager::update(float delta_time)
+void    EntityManager::update(float deltaTime)
 {
-    m_spawn_cooldown -= delta_time;
+    m_spawnCooldown -= deltaTime;
 
-    if (m_spawn_cooldown < 0 && m_wave_index < m_wave_count)
-        spawn_enemies();
+    if (m_spawnCooldown < 0 && m_waveIndex <= m_waveCount)
+        spawnEnemies();
 
     for (Enemy* enemy : m_enemies)
     {
         if (enemy)
-            enemy->update(delta_time);
+            enemy->update(deltaTime);
     }
 
     for (Bullet* bullet : m_bullets)
     {
         if (bullet)
-            bullet->update(delta_time);
-    }
-}
-
-void    EntityManager::draw(GPLib* gp) const
-{
-    for (Bullet* bullet : m_bullets)
-    {
-        if (bullet)
-            bullet->draw(gp);
+            bullet->update(deltaTime);
     }
 
     for (Tower* tower : m_towers)
     {
         if (tower)
-            tower->draw(gp);        
+            tower->update(deltaTime, m_gp);
+    }
+
+    // Destroy entities that should be destroyed
+    clear();
+}
+
+void    EntityManager::draw() const
+{
+    for (Bullet* bullet : m_bullets)
+    {
+        if (bullet)
+            bullet->draw(m_gp);
+    }
+
+    for (Tower* tower : m_towers)
+    {
+        if (tower)
+            tower->draw(m_gp);        
     }
 
     for (Enemy* enemy : m_enemies)
     {
         if (enemy)
-            enemy->draw(gp);
+            enemy->draw(m_gp);
     }
 }
 
+#include <algorithm>
 void EntityManager::clear()
 {
-    for (Enemy* enemy : m_enemies)
-    {
-        if (enemy && enemy->m_should_destroy)
-            destroyEnemy(enemy);
-    }
+    for (int i = 0; i < m_enemies.size(); ++i)
+        destroyEnemy(i);
 
-    for (Bullet* bullet : m_bullets)
-    {
-        if (bullet && bullet->m_should_destroy)
-            destroyBullet(bullet);
-    }
+    for (int i = 0; i < m_bullets.size(); ++i)
+        destroyBullet(i);
 
-    for (Tower* tower : m_towers)
-    {
-        if (tower && tower->m_should_destroy)
-            destroyTower(tower);
-    }
+    for (int i = 0; i < m_towers.size(); ++i)
+        destroyTower(i);
 }
 
-void    EntityManager::spawn_enemies()
+void    EntityManager::spawnEnemies()
 {
-    is_in_wave = true;
-    m_spawn_cooldown = m_spawn_rate;
+    m_isInWave = true;
+    m_spawnCooldown = m_spawnRate;
 
-    switch (m_spawn_pattern[m_spawn_index++])
+    switch (m_spawnPattern[m_spawnIndex++])
     {
         case 'W':
-            createEnemy(new WeakEnemy(Enemy::m_waypoints[0], m_ResourceManager));
+            createEnemy(new WeakEnemy(Enemy::m_waypoints[0], m_resourceManager));
             break;
         
         case 'H':
-            createEnemy(new HealerEnemy(Enemy::m_waypoints[0], m_ResourceManager));
+            createEnemy(new HealerEnemy(Enemy::m_waypoints[0], m_resourceManager));
             break;
 
         case 'S':
-            createEnemy(new StrongEnemy(Enemy::m_waypoints[0], m_ResourceManager));
+            createEnemy(new StrongEnemy(Enemy::m_waypoints[0], m_resourceManager));
             break;
         
         case ' ':
-            m_spawn_cooldown = 2.5f;
+            m_spawnCooldown = 2.5f;
             break;
 
         case '\n':
             if (m_enemies.size() == 0)
             {
-                m_spawn_cooldown = (m_wave_timer * m_wave_index++);
-                is_in_wave = false;
+                m_spawnCooldown = (m_waveTimer * m_waveIndex++);
+                m_isInWave = false;
             }
             else
-                m_spawn_index--;
+                m_spawnIndex--;
             break;
 
         default:
-            m_spawn_cooldown = m_spawn_rate;
+            m_spawnCooldown = m_spawnRate;
     }
 }
 
 void    EntityManager::createTower(Tower* tower)
 {
     m_towers.push_back(tower);
-    tower->m_EntityManager = this;
+    tower->m_entityManager = this;
 }
 
 void    EntityManager::createEnemy(Enemy* enemy)
 {
     m_enemies.push_back(enemy);
-    enemy->m_EntityManager = this;
+    enemy->m_entityManager = this;
 }
 
 void    EntityManager::createBullet(Bullet* bullet)
 {
     m_bullets.push_back(bullet);
-    bullet->m_EntityManager = this;
+    bullet->m_entityManager = this;
 }
 
-void    EntityManager::destroyTower(Tower* tower)
+void    EntityManager::destroyTower(int index)
 {
-    if (m_towers.size() == 0)
-         return;
-
-    if (tower->m_slot)
-        tower->m_slot->m_is_occuped = false;
-
-    *tower = *m_towers.back();
-    delete m_towers.back();
-    m_towers.pop_back();
+    Tower* tower = m_towers[index];
+    if (!tower || tower->m_shouldDestroy)
+    {
+        m_towers[index] = m_towers.back();
+        m_towers.pop_back();
+        delete tower;
+    }
 }
-void    EntityManager::destroyEnemy(Enemy* enemy)
+
+void    EntityManager::destroyEnemy(int index)
 {
-    if (m_enemies.size() == 0)
-         return;
-
-    *enemy = *m_enemies.back();
-    delete m_enemies.back();
-    m_enemies.pop_back();
+    Enemy* enemy = m_enemies[index];
+    if (!enemy || enemy->m_shouldDestroy)
+    {
+        m_enemies[index] = m_enemies.back();
+        m_enemies.pop_back();
+        delete enemy;
+    }
 }
-void    EntityManager::destroyBullet(Bullet* bullet)
+
+void    EntityManager::destroyBullet(int index)
 {
-     if (m_bullets.size() == 0)
-         return;
-
-    *bullet = *m_bullets.back();
-    delete m_bullets.back();
-    m_bullets.pop_back();
+    Bullet* bullet = m_bullets[index];
+    if (!bullet ||  bullet->m_shouldDestroy)
+    {
+        m_bullets[index] = m_bullets.back();
+        m_bullets.pop_back();
+        delete bullet;
+    }
 }
 
-const int     EntityManager::get_timer() const
+const int     EntityManager::getTimer() const
 {
-    return m_spawn_cooldown < 0 || is_in_wave ? 0 : m_spawn_cooldown;
+    return m_spawnCooldown < 0 || m_isInWave ? 0 : m_spawnCooldown;
 }
 
-const int   EntityManager::get_wave_index() const
+const int   EntityManager::getWaveIndex() const
 {
-    return m_wave_index;
+    return m_waveIndex;
 }
 
-const int   EntityManager::get_wave_count() const
+const int   EntityManager::getWaveCount() const
 {
-    return m_wave_count;
+    return m_waveCount;
 }
 
-unsigned int    EntityManager::get_enemy_count() const
+unsigned int    EntityManager::getEnemyCount() const
 {
     return m_enemies.size();
 }

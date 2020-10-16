@@ -9,11 +9,11 @@ class TowerSlot
         Rectangle   m_collision;
 
     public:
-        bool        m_is_occuped = false;
+        bool        m_isAvailable = true;
         
         TowerSlot(Vector2 position);
 
-        const Rectangle get_collision() const;
+        const Rectangle getCollision() const;
 
-        const Vector2   get_position() const;
+        const Vector2   getPosition() const;
 };

@@ -11,31 +11,31 @@ void Bullet::update(float delta_time)
 {
     move(delta_time);
 
-    get_angle(m_target->get_position());
+    get_angle(m_target->getPosition());
 
-    for (Enemy* enemy : m_EntityManager->m_enemies)
+    for (Enemy* enemy : m_entityManager->m_enemies)
     {
         if (!enemy)
             continue;
 
-        if (c_point_box(get_position(), Rectangle{enemy->get_position(), enemy->get_halfsize(), enemy->get_halfsize()}))
+        if (c_point_box(getPosition(), Rectangle{enemy->getPosition(), enemy->getHalfsize(), enemy->getHalfsize()}))
             hit(*enemy);
     }
 
-    if (!m_target || m_target->m_should_destroy)
-        m_should_destroy = true;
+    if (!m_target || m_target->m_shouldDestroy)
+        m_shouldDestroy = true;
 }
 
 void Bullet::move(float delta_time)
 {
-    m_direction = (m_target->get_position() - m_position).normalize();
+    m_direction = (m_target->getPosition() - m_position).normalize();
     m_position += m_direction * m_speed * delta_time;
 }
 
 void Bullet::hit(Enemy& enemy)
 {
     enemy.m_life -= m_damage;
-    m_should_destroy = true;
+    m_shouldDestroy = true;
 }
 
 void Bullet::draw(GPLib* gp)

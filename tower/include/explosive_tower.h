@@ -8,5 +8,5 @@ class ExplosiveTower : public Tower
     public:
         ExplosiveTower(TowerSlot* slot, const ResourceManager& RM);
         
-        void create_bullet() override;
+        void createBullet() override;
 };

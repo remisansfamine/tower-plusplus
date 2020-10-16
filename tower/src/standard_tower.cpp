@@ -6,15 +6,16 @@
 StandardTower::StandardTower(TowerSlot* slot, const ResourceManager& RM)
 : Tower(slot)
 {
+    m_price = 5;
     m_life = m_max_life = 120;
     m_damage = 5;
-    m_cooldown = m_fire_rate = 1.f;
+    m_cooldown = m_fireRate = 1.f;
     m_range = 150;
-    m_texture = RM.get_texture(TextureType::STANDARD_IDLE);
+    m_texture = RM.getTexture(TextureType::STANDARD_IDLE);
 }
 
-void StandardTower::create_bullet()
+void StandardTower::createBullet()
 {
-    m_EntityManager->createBullet(new StandardBullet(get_position(),
-                                                     m_target, m_EntityManager->m_ResourceManager));
+    m_entityManager->createBullet(new StandardBullet(getPosition(),
+                                                     m_target, m_entityManager->m_resourceManager));
 }

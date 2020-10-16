@@ -10,14 +10,14 @@ class Button
 {
     protected:
         GPLib*      m_gp;
-        bool        m_is_pressed = false;
-        bool        m_is_dragged = false;
-        bool        m_is_draggable = false;
-        Vector2     m_last_mousepos;
-        Vector2     m_initial_position;
+        bool        m_isPressed = false;
+        bool        m_isDragged = false;
+        bool        m_isDraggable = false;
+        Vector2     m_lastMousepos;
+        Vector2     m_initialPosition;
 
     public:
-        ButtonManager*   m_ButtonManager;
+        ButtonManager*   m_buttonManager;
         GPTexture   m_texture;
         GPColor     m_color = GP_CWHITE;
         Rectangle   m_rect;
@@ -26,13 +26,13 @@ class Button
 
         virtual void update();
 
-        virtual void is_pressed(Vector2 mouse_pos);
-        virtual void is_released();
-        virtual void is_down(Vector2 mouse_pos);
-        virtual void is_up();
-        virtual void is_hightlighted();
-        virtual void is_dragged(Vector2 mouse_pos);
-        virtual void is_undragged();
+        virtual void isPressed(Vector2 mouse_pos);
+        virtual void isReleased();
+        virtual void isDown(Vector2 mouse_pos);
+        virtual void isUp();
+        virtual void isHightlighted();
+        virtual void isDragged(Vector2 mouse_pos);
+        virtual void isUndragged();
 
         virtual void    draw(GPLib* gp) const;
 };

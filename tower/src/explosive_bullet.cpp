@@ -6,16 +6,16 @@ ExplosiveBullet::ExplosiveBullet(Vector2 position, Enemy* enemy, const ResourceM
 : Bullet(position, enemy)
 {
     m_speed = 300;
-    m_texture = RM.get_texture(TextureType::EXPLOSIVE_BULLET);
+    m_texture = RM.getTexture(TextureType::EXPLOSIVE_BULLET);
     m_damage = 10.f;
 }
 
 
 void ExplosiveBullet::hit(Enemy& enemy)
 {
-    for (Enemy* enemy : m_EntityManager->m_enemies)
+    for (Enemy* enemy : m_entityManager->m_enemies)
     {
-        if (enemy && c_circle_box(Circle{m_range, get_position()}, enemy->get_rect()))
+        if (enemy && c_circle_box(Circle{m_range, getPosition()}, enemy->getRect()))
             Bullet::hit(*enemy);
     }
 }

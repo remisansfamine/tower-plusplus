@@ -40,6 +40,6 @@ class ResourceManager
         ResourceManager(GPLib* gp);
 
         ~ResourceManager();
-        const GPTexture get_texture(TextureType type) const;
-        const GPFont    get_font() const;
+        const GPTexture getTexture(TextureType type) const;
+        const GPFont    getFont() const;
 };

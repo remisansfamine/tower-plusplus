@@ -20,23 +20,25 @@ class Tower : public Entity
 {
     protected:
         Enemy*  m_target = nullptr;
-        float   m_fire_rate;
+        float   m_fireRate;
         float   m_cooldown;
         float   m_range;
         
     public:
+        int         m_price;
         TowerSlot*  m_slot = nullptr;
-        static std::vector<TowerSlot> m_tower_slots;
+        static std::vector<TowerSlot> m_towerSlots;
 
         Tower(TowerSlot* slot);
+        ~Tower();
 
-        virtual void update(float delta_time);
+        virtual void update(float deltaTime, GPLib* gp);
 
-        void get_target();
+        void getTarget();
 
         void shoot();
 
-        virtual void create_bullet() = 0;
+        virtual void createBullet() = 0;
 
         void draw(GPLib* gp) override;
 };

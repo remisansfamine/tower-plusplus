@@ -16,18 +16,19 @@ class Button
         bool        m_isPressed = false;
         bool        m_isDragged = false;
         bool        m_isDraggable = false;
+        bool        m_isUndragged = false;
         
     public:
         ButtonManager*  m_buttonManager;
         GPTexture       m_texture;
         GPColor         m_color = GP_CWHITE;
         Rectangle       m_rect;
-        bool            m_isUndragged = false;
-
 
         Button(GPLib* gp, Vector2 position);
 
         virtual void update();
+
+        virtual void draw(GPLib* gp) const;
 
         virtual void isPressed();
         virtual void isReleased();
@@ -37,5 +38,5 @@ class Button
         virtual void isDragged(Vector2 mouse_pos);
         virtual void isUndragged();
 
-        virtual void    draw(GPLib* gp) const;
+        Vector2 getPosition() const;
 };

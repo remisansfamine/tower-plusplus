@@ -7,9 +7,15 @@
 class HUD
 {
     private:
+        GPFont m_font;
+
         EntityManager* m_entityManager;
 
         void    displayWavesState(GPLib* gp) const;
+
+        void    drawCastleLife(GPLib*) const;
+
+        void    drawGameOver(GPLib*) const;
 
     public:
         HUD(EntityManager*);

@@ -33,6 +33,11 @@ class Tower : public Entity
 
         virtual void    createBullet() = 0;
 
+        void    drawLifebar(GPLib* gp) const;
+
+        Circle      getCircle() const;
+        Rectangle   getRect() const;
+
     public:
         int         m_price;
         TowerSlot*  m_slot = nullptr;

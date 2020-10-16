@@ -4,19 +4,22 @@ Entity::Entity(Vector2 position)
 : m_position(position) { }
 
 #pragma region Accessers
-float Entity::X() const
+float   Entity::X() const
 {
     return m_position.x;
 }
-float Entity::Y() const
+
+float   Entity::Y() const
 {
     return m_position.y;
 }
+
 Vector2 Entity::getPosition() const
 {
     return m_position;
 }
-void Entity::setAngle(Vector2 target)
+
+void    Entity::setAngle(Vector2 target)
 {
     Vector2 vect = target - m_position;
 

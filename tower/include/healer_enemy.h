@@ -9,10 +9,16 @@ class HealerEnemy : public Enemy
         float   m_healRate = 1.5f;
         Enemy*  m_target = nullptr;
 
+        void    getTarget();
+
+        void    healTarget(float deltaTime);
+
+        Circle  getCircle() const;
+
     public:
         HealerEnemy(Vector2 position, const ResourceManager& RM);
     
-        void update(float delta_time) override;
+        void    update(float deltaTime) override;
 
-        void draw(GPLib* gp) override;
+        void    draw(GPLib* gp) override;
 };

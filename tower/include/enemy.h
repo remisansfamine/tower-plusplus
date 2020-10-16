@@ -19,12 +19,16 @@ class Enemy : public Entity
 
         void    reachCastle();
 
+        void    drawLifebar(GPLib* gp) const;
+
     public:
         static std::vector<Vector2>  m_waypoints;
 
         Enemy(Vector2 position);
 
         virtual void    update(float delta_time);
+
+        virtual void    draw(GPLib* gp) override;
 
         int     getReward() const;
 
@@ -33,6 +37,4 @@ class Enemy : public Entity
         float   getHalfsize() const;
 
         void    stun(float);
-
-        virtual void draw(GPLib* gp) override;
 };

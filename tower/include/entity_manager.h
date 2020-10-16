@@ -5,6 +5,13 @@
 #include "resource_manager.h"
 #include "castle.h"
 
+enum class GameState
+{
+    WIN,
+    LOSE,
+    RUNNING
+};
+
 class Enemy;
 class Tower;
 class Bullet;
@@ -12,6 +19,8 @@ class Bullet;
 class EntityManager
 {
     private:
+        GPLib* m_gp;
+
         std::string m_spawnPattern;
         bool    m_isInWave = false;
         float   m_spawnCooldown;
@@ -34,7 +43,7 @@ class EntityManager
         void    clear();
 
     public:
-        GPLib* m_gp;
+        GameState   m_gameState = GameState::RUNNING;
 
         const ResourceManager m_resourceManager;
 
@@ -50,6 +59,8 @@ class EntityManager
 
         void    update(float delta_time);
 
+        void    draw() const;
+
         void    createTower(Tower*);
         void    createBullet(Bullet*);
 
@@ -57,7 +68,4 @@ class EntityManager
         const int   getWaveIndex() const;
         const int   getWaveCount() const;
         const unsigned int    getEnemyCount() const;
-
-        void    draw() const;
-
 };

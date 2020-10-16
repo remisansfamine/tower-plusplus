@@ -1,12 +1,12 @@
 #include "collisions.h"
 #include <cmath>
 
-bool c_circle_point(Circle circle,Vector2 point)
+bool    c_circle_point(Circle circle,Vector2 point)
 {
     return (point - circle.center).getSquareMagnitude() <= pow(circle.radius, 2);
 }
 
-bool c_point_box(Vector2 point, Rectangle box)
+bool    c_point_box(Vector2 point, Rectangle box)
 {
     return point.x >= box.position.x - box.halfwidth
         && point.x <= box.position.x + box.halfwidth
@@ -14,7 +14,7 @@ bool c_point_box(Vector2 point, Rectangle box)
         && point.y <= box.position.y + box.halfheight;
 }
 
-bool c_circle_box(Circle circle, Rectangle box)
+bool    c_circle_box(Circle circle, Rectangle box)
 {
     float x = clamp(circle.center.x, box.position.x -
                     box.halfwidth, box.position.x + box.halfwidth);

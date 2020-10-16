@@ -39,6 +39,8 @@ void    EntityManager::update(float deltaTime)
 
     if (m_spawnCooldown < 0 && m_waveIndex <= m_waveCount)
         spawnEnemies();
+    else if (m_waveIndex == m_waveCount)
+        m_gameState = GameState::WIN;
 
     for (Enemy* enemy : m_enemies)
     {
@@ -83,7 +85,7 @@ void    EntityManager::draw() const
     }
 }
 
-void EntityManager::clear()
+void    EntityManager::clear()
 {
     for (int i = 0; i < m_enemies.size(); ++i)
         destroyEnemy(i);
@@ -127,7 +129,9 @@ void    EntityManager::spawnEnemies()
                 m_isInWave = false;
             }
             else
+            {
                 m_spawnIndex--;
+            }
             break;
 
         default:
@@ -191,7 +195,7 @@ void    EntityManager::destroyBullet(int index)
 #pragma endregion
 
 #pragma region Accessers
-const int     EntityManager::getTimer() const
+const int   EntityManager::getTimer() const
 {
     return m_spawnCooldown < 0 || m_isInWave ? 0 : m_spawnCooldown;
 }

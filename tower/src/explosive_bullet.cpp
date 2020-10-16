@@ -13,7 +13,7 @@ ExplosiveBullet::ExplosiveBullet(Vector2 position, Enemy* enemy,
 }
 
 
-void ExplosiveBullet::hit(Enemy& enemy)
+void    ExplosiveBullet::hit(Enemy& enemy)
 {
     for (Enemy* enemy : m_entityManager->m_enemies)
     {
@@ -22,7 +22,7 @@ void ExplosiveBullet::hit(Enemy& enemy)
     }
 }
 
-void ExplosiveBullet::draw(GPLib* gp)
+void    ExplosiveBullet::draw(GPLib* gp)
 {
     Bullet::draw(gp);
     gpDrawCircleFilled(gp, m_position, m_range, GPColor{1.f, 0.f, 0.f, 0.1f});

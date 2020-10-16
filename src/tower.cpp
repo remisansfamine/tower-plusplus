@@ -2,6 +2,8 @@
 
 #include "map.h"
 
+#include "game.h"
+
 #include "resource_manager.h"
 #include "entity_manager.h"
 #include "enemy.h"
@@ -10,21 +12,40 @@
 
 #include "collisions.h"
 
-std::vector<TowerSlot> Tower::m_tower_slots;
+std::vector<TowerSlot> Tower::m_towerSlots;
 
-Tower::Tower(TowerSlot* slot) : Entity(slot->get_position()), m_slot(slot) { }
+Tower::Tower(TowerSlot* slot) : Entity(slot->getPosition()), m_slot(slot) { }
 
-void Tower::update(float delta_time)
+Tower::~Tower()
 {
-    m_life -= delta_time;
+    if (m_slot)
+        m_slot->m_isAvailable = true;
+}
+
+void Tower::update(float delta_time, GPLib* m_gp)
+{
+    Vector2 mouse_pos = gpMousePosition(m_gp);
+
+    if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_2))
+    {
+        if (c_point_box(getPosition(), Rectangle{mouse_pos, 32, 32}))
+        {
+            m_shouldDestroy = true;
+            Game::m_money += (m_life / m_max_life) * m_price / 2;
+        }
+    }
+
+    if (m_entityManager->getEnemyCount() != 0)
+        m_life -= delta_time;
+
     m_cooldown -= delta_time;
 
     if (m_target)
     {
-        if (c_circle_box({m_range, get_position()}, m_target->get_rect()) &&
-        !m_target->m_should_destroy)
+        if (c_circle_box({m_range, getPosition()}, m_target->getRect()) &&
+        !m_target->m_shouldDestroy)
         {
-            get_angle(m_target->get_position());
+            get_angle(m_target->getPosition());
 
             shoot();
         }
@@ -32,17 +53,18 @@ void Tower::update(float delta_time)
             m_target = nullptr;
     }
     else
-        get_target();
+        getTarget();
 
     if (m_life <= 0)
-        m_should_destroy = true;
+        m_shouldDestroy = true;
 }
 
-void Tower::get_target()
+void Tower::getTarget()
 {
-    for (Enemy* enemy : m_EntityManager->m_enemies)
+    for (Enemy* enemy : m_entityManager->m_enemies)
     {
-        if (enemy && !enemy->m_should_destroy && c_circle_point({m_range, get_position()}, enemy->get_position()))
+        if (enemy && !enemy->m_shouldDestroy &&
+        c_circle_point({m_range, getPosition()}, enemy->getPosition()))
         {
             m_target = enemy;
             break;
@@ -54,9 +76,9 @@ void Tower::shoot()
 {
     if (m_cooldown <= 0)
     {
-        create_bullet();
+        createBullet();
 
-        m_cooldown = m_fire_rate;
+        m_cooldown = m_fireRate;
     }
 }
 

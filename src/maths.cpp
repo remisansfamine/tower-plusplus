@@ -27,13 +27,13 @@ Vector2::Vector2(GPVector2 vect, bool isUnitary) : x(vect.x), y(vect.y)
 #pragma endregion
 
 #pragma region vector functions
-float Vector2::get_square_magnitude() const { return pow(x, 2) + pow(y, 2); }
-float Vector2::get_magnitude() const { return sqrt(get_square_magnitude()); }
-float Vector2::get_distance(const Vector2& other) const { return (*this - other).get_magnitude(); }
-float Vector2::get_square_distance(const Vector2& other) const { return (*this - other).get_square_magnitude(); }
+float Vector2::getSquareMagnitude() const { return pow(x, 2) + pow(y, 2); }
+float Vector2::getMagnitude() const { return sqrt(getSquareMagnitude()); }
+float Vector2::getDistance(const Vector2& other) const { return (*this - other).getMagnitude(); }
+float Vector2::getSquareDistance(const Vector2& other) const { return (*this - other).getSquareMagnitude(); }
 Vector2& Vector2::normalize()
 {
-    float magnitude = get_magnitude();
+    float magnitude = getMagnitude();
     if (magnitude == 0)
         *this = Vector2::zero;
     else

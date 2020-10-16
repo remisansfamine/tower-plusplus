@@ -9,10 +9,10 @@ class Enemy : public Entity
 {
     protected:
         float   m_speed;
-        int     m_current_waypoint = 0;
+        int     m_currentWaypoint = 0;
         int     m_reward;
-        int     m_libebar_offset = 5;
-        float   m_stun_cooldown = 0;
+        int     m_libebarOffset = 5;
+        float   m_stunCooldown = 0;
         Rectangle   m_rect = {{0, 0}, 32, 32};
 
         void    move(float delta_time);
@@ -24,15 +24,15 @@ class Enemy : public Entity
 
         virtual void    update(float delta_time);
 
-        int     get_reward() const;
+        int     getReward() const;
 
-        Rectangle   get_rect() const;
+        Rectangle   getRect() const;
 
-        float   get_halfsize() const;
+        float   getHalfsize() const;
 
         void    stun(float);
 
         virtual void draw(GPLib* gp) override;
 
-        void    reach_castle();
+        void    reachCastle();
 };

@@ -6,7 +6,7 @@ WeakEnemy::WeakEnemy(Vector2 position, const ResourceManager& RM) : Enemy(positi
     m_reward = 3;
     m_damage = 10;
     m_speed = 125;
-    m_texture = RM.get_texture(TextureType::WEAK_ENEMY_IDLE);
+    m_texture = RM.getTexture(TextureType::WEAK_ENEMY_IDLE);
     m_direction = Vector2(5, 3, true);
 }
 

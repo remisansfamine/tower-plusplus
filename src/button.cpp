@@ -23,55 +23,55 @@ void Button::update()
         if (gpMouseButtonIsDown(m_gp, GP_MOUSE_BUTTON_1))
         {
             if (gpMouseButtonIsPressed(m_gp, GP_MOUSE_BUTTON_1))
-                is_pressed(mouse_pos);  
+                isPressed(mouse_pos);  
             else
-                is_down(mouse_pos);
+                isDown(mouse_pos);
         }
-        else is_hightlighted();
+        else isHightlighted();
 
         if (gpMouseButtonIsReleased(m_gp, GP_MOUSE_BUTTON_1))
-            is_released();
+            isReleased();
     }
-    else is_up();
+    else isUp();
     
-    if (m_is_dragged)
-        is_dragged(mouse_pos);
+    if (m_isDragged)
+        isDragged(mouse_pos);
 
-    m_last_mousepos = mouse_pos;
+    m_lastMousepos = mouse_pos;
 }
 
-void Button::is_pressed(Vector2 mouse_pos)
+void Button::isPressed(Vector2 mouse_pos)
 {
-    m_is_pressed = true;
+    m_isPressed = true;
 }
-void Button::is_released()
+void Button::isReleased()
 {
-    m_ButtonManager->m_current = nullptr;
-    m_is_pressed = false;
+    m_buttonManager->m_current = nullptr;
+    m_isPressed = false;
     
-    if (m_is_dragged)
-        is_undragged();
+    if (m_isDragged)
+        isUndragged();
 }
-void Button::is_down(Vector2 mouse_pos)
+void Button::isDown(Vector2 mousePos)
 {
-    if (m_last_mousepos != mouse_pos && m_is_pressed)
-        m_is_dragged = m_is_draggable;
+    if (m_lastMousepos != mousePos && m_isPressed)
+        m_isDragged = m_isDraggable;
 }
-void Button::is_up()
-{
-
-}
-void Button::is_hightlighted()
+void Button::isUp()
 {
 
 }
-void Button::is_dragged(Vector2 mouse_pos)
+void Button::isHightlighted()
+{
+
+}
+void Button::isDragged(Vector2 mouse_pos)
 {
     m_rect.position = mouse_pos;
 }
-void Button::is_undragged()
+void Button::isUndragged()
 {
-    m_is_dragged = false;
+    m_isDragged = false;
 }
 
 void    Button::draw(GPLib* gp) const

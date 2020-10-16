@@ -13,7 +13,7 @@ ButtonManager::~ButtonManager()
 void    ButtonManager::createButton(Button* button)
 {
     m_buttons.push_back(button);
-    button->m_ButtonManager = this;
+    button->m_buttonManager = this;
 }
 
 void    ButtonManager::destroyButton(Button* button)

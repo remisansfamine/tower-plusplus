@@ -11,25 +11,27 @@ class Bullet;
 class EntityManager
 {
     private:
-        std::string m_spawn_pattern;
-        bool    is_in_wave = false;
-        float   m_spawn_cooldown;
-        float   m_spawn_rate = 1;
-        float   m_wave_timer = 10;
-        unsigned int    m_spawn_index = 0;
-        unsigned int    m_wave_index = 1;
-        unsigned int    m_wave_count = 0;
+        std::string m_spawnPattern;
+        bool    m_isInWave = false;
+        float   m_spawnCooldown;
+        float   m_spawnRate = 1;
+        float   m_waveTimer = 10;
+        unsigned int    m_spawnIndex = 0;
+        unsigned int    m_waveIndex = 1;
+        unsigned int    m_waveCount = 0;
 
-        void    destroyTower(Tower*);
-        void    destroyEnemy(Enemy*);
-        void    destroyBullet(Bullet*);
+        void    destroyTower(int index);
+        void    destroyEnemy(int index);
+        void    destroyBullet(int index);
 
         void    createEnemy(Enemy*);
 
     public:
-        const ResourceManager m_ResourceManager;
+        GPLib* m_gp;
 
-        EntityManager(const ResourceManager&);
+        const ResourceManager m_resourceManager;
+
+        EntityManager(const ResourceManager&, GPLib* gp);
 
         ~EntityManager();
 
@@ -41,18 +43,18 @@ class EntityManager
 
         void    update(float delta_time);
 
-        void    spawn_enemies();
+        void    spawnEnemies();
 
         void    createTower(Tower*);
         void    createBullet(Bullet*);
 
-        const int   get_timer() const;
-        const int   get_wave_index() const;
-        const int   get_wave_count() const;
+        const int   getTimer() const;
+        const int   getWaveIndex() const;
+        const int   getWaveCount() const;
 
-        void    draw(GPLib* gp) const;
+        void    draw() const;
 
         void    clear();
 
-        unsigned int    get_enemy_count() const;
+        unsigned int    getEnemyCount() const;
 };

@@ -5,37 +5,40 @@
 
 std::vector<Vector2> Enemy::m_waypoints(26);
 
-Enemy::Enemy(Vector2 position) : Entity(position) { }
+Enemy::Enemy(Vector2 position) : Entity(position)
+{
+
+}
 
 void Enemy::move(float delta_time)
 {
-    if (m_current_waypoint == Enemy::m_waypoints.size())
+    if (m_currentWaypoint == Enemy::m_waypoints.size())
         return;
 
-    m_stun_cooldown -= delta_time;
+    m_stunCooldown -= delta_time;
 
-    if (m_position.get_distance(m_waypoints[m_current_waypoint]) <= 16)
+    if (m_position.getDistance(m_waypoints[m_currentWaypoint]) <= 16)
     {   
-        if (++m_current_waypoint == Enemy::m_waypoints.size())
-            reach_castle();
+        if (++m_currentWaypoint == Enemy::m_waypoints.size())
+            reachCastle();
     }
 
-    m_direction = (m_waypoints[m_current_waypoint] - m_position).normalize();
+    m_direction = (m_waypoints[m_currentWaypoint] - m_position).normalize();
 
-    m_position += m_direction * delta_time * m_speed / (m_stun_cooldown > 0 ? 2 : 1);
+    m_position += m_direction * delta_time * m_speed / (m_stunCooldown > 0 ? 2 : 1);
 }
 
-int Enemy::get_reward() const
+int Enemy::getReward() const
 {
     return m_reward;
 }
 
-Rectangle   Enemy::get_rect() const
+Rectangle   Enemy::getRect() const
 {
     return Rectangle{m_position, m_rect.halfwidth, m_rect.halfheight};
 }
 
-float  Enemy::get_halfsize() const
+float  Enemy::getHalfsize() const
 {
     return m_rect.halfheight;
 }
@@ -44,18 +47,18 @@ void    Enemy::update(float delta_time)
 {
     move(delta_time);
 
-    get_angle(m_waypoints[m_current_waypoint]);
+    get_angle(m_waypoints[m_currentWaypoint]);
 
     if (m_life <= 0)
     {
-        Game::m_money += get_reward();
-        m_should_destroy = true;
+        Game::m_money += getReward();
+        m_shouldDestroy = true;
     }
 }
 
 void    Enemy::stun(float cooldown)
 {
-    m_stun_cooldown = cooldown;
+    m_stunCooldown = cooldown;
 }
 
 void    Enemy::draw(GPLib* gp)
@@ -65,7 +68,7 @@ void    Enemy::draw(GPLib* gp)
     if (m_life >= m_max_life || m_life <= 0)
         return;
 
-    GPRect lifebar = {m_position.x - TILE_SIZE / 2, m_position.y + TILE_SIZE / 2 + m_libebar_offset, TILE_SIZE, TILE_SIZE / 8};
+    GPRect lifebar = {m_position.x - TILE_SIZE / 2, m_position.y + TILE_SIZE / 2 + m_libebarOffset, TILE_SIZE, TILE_SIZE / 8};
     gpDrawRectFilled(gp, lifebar, GP_CWHITE);
 
     lifebar.w *= m_life / m_max_life;
@@ -75,9 +78,9 @@ void    Enemy::draw(GPLib* gp)
     gpDrawRect(gp, lifebar, GP_CBLACK);
 }
 
-void Enemy::reach_castle()
+void Enemy::reachCastle()
 {
-    m_should_destroy = true;
+    m_shouldDestroy = true;
 
-    m_EntityManager->m_castle.m_life -= m_damage;
+    m_entityManager->m_castle.m_life -= m_damage;
 }

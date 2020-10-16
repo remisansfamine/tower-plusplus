@@ -41,12 +41,12 @@ ResourceManager::~ResourceManager()
     //gpFontUnload(m_gp, m_font);
 }
 
-const GPTexture ResourceManager::get_texture(TextureType type) const
+const GPTexture ResourceManager::getTexture(TextureType type) const
 {
     return m_textures[(unsigned int)type];
 }
 
-const GPFont ResourceManager::get_font() const
+const GPFont ResourceManager::getFont() const
 {
     return m_font;
 }

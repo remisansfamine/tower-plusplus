@@ -16,10 +16,10 @@ class Vector2
         Vector2(int x, int y, bool isUnitary = false);
         Vector2(GPVector2 vect, bool isUnitary = false);
 
-        float get_square_magnitude() const;
-        float get_magnitude() const;
-        float get_distance(const Vector2& other) const;
-        float get_square_distance(const Vector2& other) const;
+        float getSquareMagnitude() const;
+        float getMagnitude() const;
+        float getDistance(const Vector2& other) const;
+        float getSquareDistance(const Vector2& other) const;
 
         Vector2& normalize();
 

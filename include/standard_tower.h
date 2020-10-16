@@ -8,5 +8,5 @@ class StandardTower : public Tower
     public:
         StandardTower(TowerSlot* slot, const ResourceManager& RM);
 
-        void create_bullet() override;
+        void createBullet() override;
 };

@@ -9,14 +9,14 @@ class Bullet : public Entity
         float   m_speed;
         Enemy*  m_target = nullptr;
 
-        void move(float delta_time);
+        void move(float deltaTime);
 
         virtual void hit(Enemy&);
 
     public:
         Bullet(Vector2 position, Enemy* enemy);
 
-        void update(float delta_time) override;
+        void update(float deltaTime) override;
 
         void draw(GPLib* gp) override;
 };

@@ -21,9 +21,9 @@ class Entity
         void Entity::get_angle(Vector2 target);
 
     public:
-        EntityManager* m_EntityManager;
+        EntityManager* m_entityManager;
 
-        bool    m_should_destroy = false;
+        bool    m_shouldDestroy = false;
 
         float   m_life;
         float   m_max_life;
@@ -32,9 +32,9 @@ class Entity
 
         float X() const;
         float Y() const;
-        Vector2 get_position() const;
+        Vector2 getPosition() const;
 
-        virtual void update(float delta_time) = 0;
+        virtual void update(float delta_time) {};
 
         virtual void draw(GPLib* gp) = 0;
 };

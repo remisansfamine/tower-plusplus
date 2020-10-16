@@ -13,12 +13,12 @@ class Game
 {
     private:
         bool    m_isPaused = false;
-        float   m_game_speed = 1;
+        float   m_gameSpeed = 1;
 
         GPLib* m_gp;
-        const ResourceManager   m_ResourceManager;
-        EntityManager           m_EntityManager;
-        ButtonManager           m_ButtonManager;
+        const ResourceManager   m_resourceManager;
+        EntityManager           m_entityManager;
+        ButtonManager           m_buttonManager;
         Map                     m_map;
         HUD                     m_hud;
 
@@ -33,5 +33,5 @@ class Game
 
         void    display() const;
 
-        float   get_delta_time();
+        float   getDeltaTime();
 };

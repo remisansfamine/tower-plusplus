@@ -8,5 +8,5 @@ class SlowingTower : public Tower
     public:
         SlowingTower(TowerSlot* slot, const ResourceManager& RM);
 
-        void create_bullet() override;
+        void createBullet() override;
 };
